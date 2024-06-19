@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Login</title>
+</head>
+<body>
+    <div class="main w-full h-screen  bg-gradient-to-r from-violet-500 to-fuchsia-500  flex flex-col justify-center items-center" >
+      
+        <div class="login h-[80vh] w-[40vw] lg:h-[90vh] lg:w-[30vw]  rounded-[2vw] bg-white flex flex-col justify-evently items-center">
+        <div class="leftdiv  h-[20vh] ">
+            <img src="{% static 'images/admin-photo2.png' %}" alt="Admin" class="w-[15vw]">
+
+        </div>
+        <div class="rightdiv h-screen  ">
+            <form action="{% url 'login'  %}" method="post" id="loginForm" enctype="multipart/form-data">
+                {% csrf_token %}
+           
+                <div class="head h-[15vh]   flex justify-center items-center">
+                <h1 class="text-black font-bold text-center  text-4xl">LOGIN</h1>
+            </div>
+
+            <div class="userpassdiv flex flex-col justify-between items-center gap-8">
+                <div class="flex flex-col justify-start gap-4">
+                <label for="username" class="font-bold ">Username : </label>
+                <div class="  w-[60%] ">
+             
+                    <p class="">{{ form.username }}</p>
+                </div>
+            </div>
+            <div class="flex flex-col justify-start gap-4">
+                <label for="password" class="font-bold ">Password : </label>
+                <div class="password-container bg-white  w-[60%] relative">
+                
+               
+                    <p class="">{{ form.password }}
+                        <!-- <span class="password-toggle-icon"><i class="fas fa-eye"></i></span> -->
+                    </p>
+                </div>
+            </div>
+                <div class="buttondiv w-full flex flex-col gap-2 justify-center items-center">
+                    <button class="bg-blue-700 text-white  px-12 py-2 rounded-full">Login</button>
+                    <div><p id="error-message" class="text-black font-bold "></p></div>
+    
+                </div>
+    
+
+            </div>
+        
+
+
+        </div>
+    </form>
+     </div>
+    </div>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- <script>
+        const passwordField = document.getElementById("password");
+        const togglePassword = document.querySelector(".password-toggle-icon i");
+        
+        togglePassword.addEventListener("click", function () {
+          if (passwordField.type === "password") {
+            passwordField.type = "text";
+            togglePassword.classList.remove("fa-eye");
+            togglePassword.classList.add("fa-eye-slash");
+          } else {
+            passwordField.type = "password";
+            togglePassword.classList.remove("fa-eye-slash");
+            togglePassword.classList.add("fa-eye");
+          }
+        });
+        </script> -->
+        <script  src="{% static 'js/login.js' %}"></script>
+    
+</body>
+</html>
