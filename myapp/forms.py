@@ -36,6 +36,19 @@ class LoginForm(forms.Form):
         return cleaned_data 
 
 
+class HospitalForm(forms.ModelForm):
+    class Meta:
+        model = Hospital
+        fields = [ 'name' , 'phone' ,'email' ,'subscript' , 'no_of_days' ,'amount','registration_date' ]
+        widgets = {
+            'name' : forms.TextInput(attrs={'class':'form-control block w-[60vw] sm:w-[35vw] h-[6vh] py-1 lg:py-1 pl-4 placeholder-gray-500 border border-gray-300 rounded text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs lg:text-sm  '}),
+            'phone':forms.TextInput(attrs={'class':'form-control block w-[60vw] sm:w-[35vw] h-[6vh] py-1 lg:py-1 pl-4 placeholder-gray-500 border border-gray-300 rounded text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs lg:text-sm  '}),
+            'email':forms.EmailInput(attrs={'class':'form-control block w-[60vw] sm:w-[35vw] h-[6vh] py-1 lg:py-1 pl-4 placeholder-gray-500 border border-gray-300 rounded text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs lg:text-sm  '}),
+            'subscript':forms.Select(attrs={ 'class':'form-control block w-[60vw] sm:w-[35vw] h-[6vh] py-1 lg:py-1 pl-4 placeholder-gray-500 border border-gray-300 rounded text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs lg:text-sm '}),
+            'no_of_days':forms.NumberInput(attrs={'class':'form-control block w-[60vw] sm:w-[35vw] h-[6vh] py-1 lg:py-1 pl-4 placeholder-gray-500 border border-gray-300 rounded text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs lg:text-sm  '}),
+            'amount':forms.NumberInput(attrs={ 'class':'form-control block w-[60vw] sm:w-[35vw] h-[6vh] py-1 lg:py-1 pl-4 placeholder-gray-500 border border-gray-300 rounded text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs lg:text-sm  '}),
+            'registration_date':forms.DateInput(attrs={  'class':'form-control block w-[60vw] sm:w-[35vw] h-[6vh] py-1 lg:py-1 pl-4 placeholder-gray-500 border border-gray-300 rounded text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs lg:text-sm ','type':'date'}),
+}
 
 
 

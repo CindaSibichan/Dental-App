@@ -42,3 +42,24 @@
   pointer-events: auto;
   transform: translateY(0);
 }
+
+/* Notification modal */
+
+#noti_modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Start off-screen */
+  opacity: 0;
+  pointer-events: none; /* Prevent interactions while hidden */
+  transform: translateY(-100%);
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+#noti_modal.active {
+  align-items: center; /* Move to the center of the screen */
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}

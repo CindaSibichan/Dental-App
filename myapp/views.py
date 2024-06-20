@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render , redirect
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from django.views import View
+from django.contrib import auth
 from . forms import *
 # Create your views here.
 
@@ -25,4 +26,33 @@ class LoginPageView(View):
 
 
 def dashboard(request):
-    return render(request , 'index.html' )
+    hospitals = Hospital.objects.all()
+    if request.method == 'POST':
+        form = HospitalForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+        else:
+        
+            return render(request, 'index.html', {'hospitals': hospitals, 'form': form})
+    else:
+     
+        form = HospitalForm()
+
+    return render(request, 'index.html', {'hospitals': hospitals, 'form': form})
+
+
+def delete_hospital(request, pk):
+    doctor = Hospital.objects.get(id=pk)
+    doctor.delete()
+    return redirect("dashboard")
+
+
+
+
+
+    
+
+def logout(request):
+    auth.logout(request)
+    return redirect("login")

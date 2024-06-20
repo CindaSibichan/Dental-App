@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Daisyui -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css" rel="stylesheet" type="text/css" /> -->
     <!-- Font Awesome cdn -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,23 +20,23 @@
 
                 <!-- logo -->
     <div class="sidediv w-full lg:w-[30vw] flex  justify-center items-center py-8 ">
-    <div class="sidebar  w-[80vw] h-[70vh] lg:w-[20vw] lg:h-[90vh] bg-gray-300 border rounded-[2vw] shadow-xl  flex flex-col gap-8 justify-evently items-center ">
-        <div class="imagediv w-[12vw] h-[12vw] flex justify-center items-center overflow-hidden bg-white rounded-full mt-4  border-2 border-white">
+    <div class="sidebar w-[80vw] h-[70vh] lg:w-[18vw] lg:h-[90vh] bg-gray-200 border rounded-[2vw]  flex flex-col gap-8 justify-evently items-center ">
+        <div class="imagediv w-[19vw] h-[19vw] lg:w-[12vw] lg:h-[12vw] flex justify-center items-center overflow-hidden bg-white rounded-full mt-4  border-2 border-white">
             <img id="profile-image" src="{% static 'images/notech-logo2.jpg' %}" alt="" class="w-[80%] ">
         </div>
 
         <!-- Buttons -->
          <div class="buttonsdiv flex gap-8">
-          <button id="noti-open-model" class="bg-[#fde9e9] w-[6vw] lg:w-[3vw] h-[5vh] rounded hover:bg-white"><a href="#"><i class="fa-solid fa-bell"></i></a></button>
-          <button class="bg-[#fde9e9] w-[6vw] lg:w-[3vw] h-[5vh] rounded hover:bg-white"><a href="#"><i class="fa-solid fa-right-from-bracket"></i></a></button>
+          <button id="noti-open-model" class="bg-[#fde9e9] w-[12vw] lg:w-[3vw] h-[5vh] rounded hover:bg-white"><i class="fa-solid fa-bell"></i></button>
+          <button class="bg-[#fde9e9] w-[12vw] lg:w-[3vw] h-[5vh] rounded hover:bg-white"><a href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i></a></button>
 
          </div>
 
          <!-- main buttons -->
 
-         <div class="mainbutton  flex flex-col gap-6">
-            <button class="bg-[#fde9e9] w-[25vw] lg:w-[15vw] h-[5vh] rounded-lg hover:bg-white"><a href="#">Dashboard</a></button>
-            <button class="bg-[#fde9e9] lg:w-[15vw] h-[5vh] rounded-lg hover:bg-white"><a href="#">Expiring Soon</button>
+         <div class="mainbutton  flex flex-col gap-6  ">
+            <button class="bg-[#fde9e9] lg:w-[15vw] h-[5vh] rounded-lg hover:bg-white"><a href="#">Dashboard</a></button>
+            <button class="bg-[#fde9e9]  lg:w-[15vw] h-[5vh] rounded-lg hover:bg-white"><a href="#">Expiring Soon</a></button>
              <button class="bg-[#fde9e9] lg:w-[15vw] h-[5vh] rounded-lg hover:bg-white"><a href="#">Expired</a></button>   
              <button class="bg-[#fde9e9] lg:w-[15vw] h-[5vh] rounded-lg hover:bg-white"><a href="#">Blocked</a></button>
 
@@ -43,34 +45,17 @@
     </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="tablediv w-[75vw]    flex flex-col justify-center items-center px-10 gap-4">
-    <div class="registerdiv h-[9vh] w-[25vw] bg-gray-300 flex justify-center items-center shadow-xl border rounded-[2vw]">
-        <button id="openmodal"><h1 class="font-medium text-xl">REGISTER A NEW HOSPITAL</h1></button>
+<div class="maintablediv w-full lg:w-[75vw]    flex flex-col justify-center items-center px-10 gap-4">
+    <div class="registerdiv w-[50vw] h-[9vh] lg:h-[9vh] lg:w-[25vw] bg-gray-200 flex justify-center items-center  border rounded-[1vw]">
+        <button id="openmodal"><h1 class="font-medium text-sm lg:text-xl">REGISTER A NEW HOSPITAL</h1></button>
 
     </div>
 
     <!-- Register modal -->
 
-    <!-- <form  id="" class="text-black h-full w-full hidden sm:w-[60vw] flex flex-col  items-center py-5 gap-8" action=""   method="POST" enctype="multipart/form-data">
-        {% csrf_token %} -->
+   
       <div id="modal" class="fixed inset-0 flex justify-center items-center z-50 bg-gray-900 bg-opacity-50 hidden">
-         <div class="bg-white rounded shadow-xl  p-8 w-[40vw] h-[70vh]">
+         <div class="bg-white rounded shadow-xl  p-8 w-[40vw] h-[80vh]">
              <div class="flex justify-end">
                 <button id="closeModalBtn" class="focus:outline-none">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700 hover:text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -79,77 +64,141 @@
                                 </button>
                             </div>
 
-                            <div class="w-full flex justify-center pb-6">
-                                <div class="imagediv w-[9vw] h-[9vw] flex justify-center items-center rounded-full  bg-gray-200 border-2 border-[#059D91] overflow-hidden">
-                    
-                                    <img id="profile_image" src="" alt="" class="w-[65%]">
-                            
-                            </div>
+                            <div class="w-full flex  pb-6">
+                                 <h1 class="text-2xl">Register New Hospital</h1>
                     </div>
-                   
+                   <div class="h-[1px] p-0 w-full bg-gray-300"></div>
+                   <form  id="hospitalmodal" class="text-black h-full w-full  sm:w-[35vw] flex flex-col  items-center py-5 gap-8" action=""   method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
                     
-                            <div class="inputdiv  flex flex-row justify-evenly items-center gap-5"> 
+                          
                                
-                            <div class="child1 flex flex-col w-[50vw] items-start px-10 ">
+                        <div class="child1 flex flex-col w-full justify-center items-start ">
                             <div class="flex flex-col w-3/4">
-                                <label class="text-[#059D91] font-bold text-left">Name:</label>
-                                <p class="mt-2">{{ form.name }}</p>
+                                <label class=" font-medium text-left">Hospital Name</label>
+                             {{ form.name }}
                             </div>
                             <div class="flex flex-col w-3/4">
-                                <label  class="text-[#059D91] font-bold text-left">Designation:</label>
-                                <p class="mt-2">{{ form.designation }}</p>
+                                <label  class=" font-medium text-left">Phone Number</label>
+                             {{ form.phone }}
                                 
                             </div> 
                             <div class="flex flex-col w-3/4">
-                                <label class="text-[#059D91] text-left font-bold">Phone:</label> 
-                                <p class="mt-2">{{ form.phone }}</p>
+                                <label class=" text-left font-medium">Email</label> 
+                                {{ form.email }}
                             </div>
                             <div class="flex flex-col w-3/4">
-                                <label  class="text-[#059D91] text-left font-bold">Chapter:</label>
-                                <p class="mt-2">{{ form.chapter }}</p>
+                                <label  class=" text-left font-medium">Subscription Type</label>
+                              {{ form.subscript }}
                             </div>
                         
-                        </div>
-                        <div class="child2 flex flex-col w-[50vw]  items-end  mb-4 ">
-                            <div class="flex flex-col  w-3/4">
-                                <label  class="text-[#059D91] text-left font-bold">ID:</label>
-                                <p   class="mt-2 " >{{ form.unique_id }}</p>
+                   
+                       
+                            <div class="flex flex-col  w-3/4 hidden " id="days">
+                                <label  class=" text-left font-medium ">Number of Days</label>
+                                {{ form.no_of_days }}
                             </div>
-                            <div class="flex flex-col w-3/4">
-                                <label  class="text-[#059D91] text-left font-bold"></label>
-                                <p class="mt-2 ">{{ form.validity_date }}</p>
+                            <div class="flex flex-col w-3/4 hidden" id="amount">
+                                <label  class="text-left font-medium ">Amount </label>
+                                {{ form.amount }}
                                  
                             </div>
-                            <div class="flex flex-col w-3/4">
-                                <label  class="text-[#059D91] text-left font-bold">Registration Date:</label>
-                                <p class="mt-2 ">{{ form.registration_date }}</p>
+                            <div class="flex flex-col w-3/4 hidden" id="register_date">
+                                <label  class="text-left font-medium ">Registration Date</label>
+                               {{ form.registration_date }}
                                  
                             </div>
-                            <div class="flex flex-col w-3/4">
-                                <label  class="text-[#059D91] text-left font-bold">District:</label>
-                                <p class="mt-2">{{ form.district }}</p>
-                               
-                            </div>
+                           
                         </div>
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" id="buttonSave" class="items-center justify-center  bg-[#059D91] px-6 py-1 text-white rounded-full ">Save</button>
-                    </div>   
+                    
+                    <div class="w-full flex justify-start gap-4">
+                        <button type="button" id="buttonCancel" class="bg-gray-500 px-6 py-1 text-white rounded ">Cancel</button>
+                        <button type="submit" id="buttonSave" class="bg-blue-500 px-6 py-1 text-white rounded">submit</button>
+                    </div>  
+                </form> 
                 </div>
             </div>
-    <!-- </form> -->
+  
 
-    <!-- Notification Modal -->
-
-
-
-
-
-    <div class="table w-[65vw] h-[80vh] shadow-xl bg-gray-300 rounded-[2vw]">
-
+          <!-- Notification modal -->
+          <div id="noti_modal" class="fixed inset-0 flex justify-center items-center z-50 bg-gray-900 bg-opacity-50 hidden">
+            <div class="bg-white rounded shadow-xl  p-8 w-[45vw] h-[40vh]">
+                <div class="flex justify-end">
+                   <button id="closeBtn" class="focus:outline-none">
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700 hover:text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                               </svg>
+                                   </button>
+                               </div>
+                               <div class="heading">
+                                <h1 class="text-2xl font-medium">Notification</h1>
+                               </div>
+                               <div class="h-[1px] p-0 w-full bg-gray-300"></div>
+                               <div class="w-full flex  pb-6">
+                                   <h1>This is a Notification Message</h1>
+                       </div>
+                      <div class="h-[1px] p-0 w-full bg-gray-300"></div>
+                       
+                      <div class="mt-8 ">
+                        <button type="button" id="buttonClose" class="items-center justify-center  bg-gray-400 px-6 py-1 text-white rounded ">Close</button>
+                      </div> 
+                </div>
+            </div>
+                         
         
 
+
+  
+
+
+
+
+     <!-- Table -->
+     <div class="tablediv w-full h-[90vh] lg:w-[72vw] lg:h-[80vh]  bg-gray-200 rounded-[2vw]">
+        <div class="overflow-x-auto overflow-y-auto mt-8">
+            {% if hospitals %}
+            <table class="table w-full divide-y divide-gray-400">
+                <!-- Table head -->
+                <thead>
+                    <tr>
+                        <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">SL NO</th>
+                        <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">HOSPITAL NAME</th>
+                        <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black   uppercase tracking-wider">AMOUNT</th>
+                        <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black  whitespace-nowrap uppercase tracking-wider">DATE OF REGISTER</th>
+                        <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">DATE OF RENEWAL</th>
+                        <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black   uppercase tracking-wider">RENEW</th>
+                        <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black   uppercase tracking-wider">ACTION
+                </thead>
+                <!-- Table body -->
+                <tbody class=" divide-y divide-gray-400">
+                    {% for hospital in hospitals %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap font-bold">{{ forloop.counter }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ hospital.name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ hospital.amount }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ hospital.registration_date|date:"d/m/Y" }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ hospital.renewal_date|date:"d/m/Y" }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% if hospital.is_renew %}
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold  bg-yellow-100 text-green-800">Renewed</span>
+                            {% else %}
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold  bg-green-100 text-yellow-800">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <button type="button" > <i class="fa-solid fa-file-pen ms-3"></i></button>
+                            <button type="button" ><a href="{% url 'delete' hospital.pk %}"> <i class="fa-solid fa-trash ms-2"></i></a></button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-center mt-4">No hospitals found.</p>
+            {% endif %}
+        </div>
     </div>
+    
 
 
 </div>
@@ -157,6 +206,6 @@
 </div>
 
   <script src="{% static 'js/register_modal.js' %}"></script>
-    
+    <script src="{% static 'js/noti_modal.js' %}"></script>
 </body>
 </html>
