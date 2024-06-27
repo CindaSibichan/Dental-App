@@ -49,22 +49,5 @@ class HospitalForm(forms.ModelForm):
             'amount':forms.NumberInput(attrs={ 'class':'form-control block w-[60vw] sm:w-[35vw] h-[6vh] py-1 lg:py-1 pl-4 placeholder-gray-500 border border-gray-300 rounded text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs lg:text-sm  '}),
             'registration_date':forms.DateInput(attrs={  'class':'form-control block w-[60vw] sm:w-[35vw] h-[6vh] py-1 lg:py-1 pl-4 placeholder-gray-500 border border-gray-300 rounded text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs lg:text-sm ','type':'date'}),
 }
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['registration_date'].required = False
-
-    def clean(self):
-        cleaned_data = super().clean()
-        subscript = cleaned_data.get('subscript')
-
-        if subscript == 'Permanent':
-            registration_date = cleaned_data.get('registration_date')
-            if not registration_date:
-                self.add_error('registration_date', 'This field is required for permanent subscriptions.')
-
-        return cleaned_data
-
-
-
-
-
+    
+   

@@ -33,8 +33,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Parse the d-m-Y formatted date string
             const [day, month, year] = hospitalRegistrationDate.split('-');
-            const parsedDate = new Date(year, month - 1, day);
-            const formattedDate = `${parsedDate.getFullYear()}-${String(parsedDate.getMonth() + 1).padStart(2, '0')}-${String(parsedDate.getDate()).padStart(2, '0')}`;
+            const parsedDate = new Date(year, month - 1, day); // month - 1 because JavaScript months are 0-indexed
+
+            // Optionally format the parsed date as needed
+            const formattedDate = `${parsedDate.getFullYear()}-${parsedDate.getMonth() + 1}-${parsedDate.getDate()}`;
 
             document.getElementById('hospital-id').value = hospitalId;
             document.getElementById('hospital-name').value = hospitalName;

@@ -23,21 +23,21 @@
   }
 
 
-  /* Modal initial and active states */
+  /*Registration Modal initial and active states */
   #modal {
   position: fixed;
   inset: 0;
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Start off-screen */
+  align-items: flex-start; 
   opacity: 0;
-  pointer-events: none; /* Prevent interactions while hidden */
+  pointer-events: none; 
   transform: translateY(-100%);
   transition: transform 0.5s ease, opacity 0.5s ease;
 }
 
 #modal.active {
-  align-items: center; /* Move to the center of the screen */
+  align-items: center; 
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
@@ -50,16 +50,31 @@
   inset: 0;
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Start off-screen */
+  align-items: flex-start; 
   opacity: 0;
-  pointer-events: none; /* Prevent interactions while hidden */
+  pointer-events: none; 
   transform: translateY(-100%);
   transition: transform 0.5s ease, opacity 0.5s ease;
 }
 
 #noti_modal.active {
-  align-items: center; /* Move to the center of the screen */
+  align-items: center; 
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
+}
+
+
+/* Scrollwidth */
+::-webkit-scrollbar {
+  width: 8px; 
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #bbb3b3; 
+  border-radius: 4px; 
 }

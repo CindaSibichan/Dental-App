@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from django.views import View
 from django.http import HttpResponse
+from django.utils import timezone
+from datetime import timedelta
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
@@ -37,7 +39,7 @@ def dashboard(request):
         hospitals = hospitals.filter(name__icontains=query) 
 
     for hospital in hospitals:
-        # hospital.subscript = hospital.subscript.strip() if hospital.subscript else 'temporary'
+       
         if hospital.renewal_date:
             hospital.is_renewed = hospital.renewal_date >= datetime.now().date()
         else:
@@ -55,8 +57,6 @@ def dashboard(request):
         form = HospitalForm()
 
     return render(request, 'index.html', {'hospitals': hospitals, 'form': form ,'query':query})
-
-
 
 
 def edit_hospital(request):
@@ -83,8 +83,37 @@ def delete_hospital(request, pk):
     return redirect("dashboard")
 
 def expiring_soon(request):
-    hospital = Hospital.objects.all()
-    return render(request,'expiring_soon.html',{'hospital':hospital})
+    hospitals = Hospital.objects.all()
+    expiring_soon_hospitals = []
+
+    current_date = timezone.now().date()
+
+    for hospital in hospitals:
+        registration_date = hospital.registration_date
+        renewal_date = hospital.renewal_date
+        
+      
+        if registration_date is None or renewal_date is None:
+            continue
+        
+      
+        expiring_soon_threshold = renewal_date - timedelta(days=30)
+        
+      
+        if expiring_soon_threshold <= current_date <= renewal_date:
+            expiring_soon_hospitals.append(hospital)
+
+    return render(request, 'expiring_soon.html', {'hospital_list': expiring_soon_hospitals})
+
+
+def delete_expiringsoon(request, pk):
+    hospital = Hospital.objects.get(id=pk)
+    hospital.delete()
+    return redirect("expiring-soon")
+
+
+
+
 def expired(request):
     hospital = Hospital.objects.all()
     return render(request,'expiring_soon.html',{'hospital':hospital})

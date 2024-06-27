@@ -1,5 +1,5 @@
 
-
+// Register modal
 
     document.addEventListener('DOMContentLoaded', (event) => {
         const modal = document.getElementById('modal');
@@ -26,12 +26,12 @@
         subscriptField.addEventListener('change', (event) => {
             const value = event.target.value;
 
-            // Hide all fields initially
+            
             daysField.classList.add('hidden');
             amountField.classList.add('hidden');
             registrationDateField.classList.add('hidden');
 
-            // Show fields based on the selected subscription type
+           
             if (value === 'Temporary') {
                 daysField.classList.remove('hidden');
             } else if (value === 'Permanent') {
