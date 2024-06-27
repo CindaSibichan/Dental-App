@@ -5,15 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <!-- Daisyui -->
-    <!-- <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css" rel="stylesheet" type="text/css" /> -->
     <!-- Font Awesome cdn -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Dental</title>
-   
-</head>
-<body class="bg-white">
+   </head>
+<body class="bg-white lg:overflow-hidden">
     <div class="main  sm:flex justify-between">
         
                 <!-- Sidebar Content -->
@@ -35,27 +32,46 @@
          <!-- main buttons -->
 
          <div class="mainbutton  flex flex-col gap-6  ">
-            <button class="bg-[#fde9e9] lg:w-[15vw] h-[5vh] rounded-lg hover:bg-white"><a href="#">Dashboard</a></button>
-            <button class="bg-[#fde9e9]  lg:w-[15vw] h-[5vh] rounded-lg hover:bg-white"><a href="#">Expiring Soon</a></button>
-             <button class="bg-[#fde9e9] lg:w-[15vw] h-[5vh] rounded-lg hover:bg-white"><a href="#">Expired</a></button>   
-             <button class="bg-[#fde9e9] lg:w-[15vw] h-[5vh] rounded-lg hover:bg-white"><a href="#">Blocked</a></button>
+            <button class="bg-[#fde9e9] lg:w-[15vw] h-[5vh] rounded-lg hover:bg-white"><a href="{% url 'dashboard' %}">Dashboard</a></button>
+            <button class="bg-[#fde9e9]  lg:w-[15vw] h-[5vh] rounded-lg hover:bg-white"><a href="{% url 'expiring-soon' %}">Expiring Soon</a></button>
+            <button class="bg-[#fde9e9] lg:w-[15vw] h-[5vh] rounded-lg hover:bg-white"><a href="{% url 'expired' %}">Expired</a></button>   
+            <button class="bg-[#fde9e9] lg:w-[15vw] h-[5vh] rounded-lg hover:bg-white"><a href="#">Blocked</a></button>
 
          </div>
 
     </div>
 </div>
 
-<div class="maintablediv w-full lg:w-[75vw]    flex flex-col justify-center items-center px-10 gap-4">
+  {% block content %}
+<div class="maintablediv w-full h-[100vh] lg:w-[75vw] lg:h-screen  flex flex-col justify-center items-center pr-10 gap-4">
+    <div class="w-full flex lg:flex-row gap-16 justify-end">
     <div class="registerdiv w-[50vw] h-[9vh] lg:h-[9vh] lg:w-[25vw] bg-gray-200 flex justify-center items-center  border rounded-[1vw]">
         <button id="openmodal"><h1 class="font-medium text-sm lg:text-xl">REGISTER A NEW HOSPITAL</h1></button>
 
     </div>
+    <form action="{% url 'dashboard' %}" method="get" id="search-form">
+        <div class="relative">
+            <input type="text" id="searchInput" placeholder="Search......" name="query" class="px-4 py-1  border-2 border-gray-400 rounded focus:outline-none focus:border-gray-600 pl-10">
+            
+            <div id="search-icon" class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <!-- Search Icon SVG -->
+              <button> <a href=""> <img src="{% static 'images/search.svg' %}" alt="" ></a></button>
+              
+            </div>
+          </div>
+        </form>
+        <!-- <ul id="suggestions"></ul> -->
+      
+    </div>
+
+
 
     <!-- Register modal -->
 
+  
    
       <div id="modal" class="fixed inset-0 flex justify-center items-center z-50 bg-gray-900 bg-opacity-50 hidden">
-         <div class="bg-white rounded shadow-xl  p-8 w-[40vw] h-[80vh]">
+         <div class="bg-white rounded shadow-xl  p-6 w-[80vw] h-auto lg:w-[40vw]  lg:h-auto">
              <div class="flex justify-end">
                 <button id="closeModalBtn" class="focus:outline-none">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700 hover:text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -73,7 +89,7 @@
                     
                           
                                
-                        <div class="child1 flex flex-col w-full justify-center items-start ">
+                        <div class="child1 flex flex-col w-full justify-center items-start gap-1 ">
                             <div class="flex flex-col w-3/4">
                                 <label class=" font-medium text-left">Hospital Name</label>
                              {{ form.name }}
@@ -112,8 +128,8 @@
                         </div>
                     
                     <div class="w-full flex justify-start gap-4">
-                        <button type="button" id="buttonCancel" class="bg-gray-500 px-6 py-1 text-white rounded ">Cancel</button>
-                        <button type="submit" id="buttonSave" class="bg-blue-500 px-6 py-1 text-white rounded">submit</button>
+                        <button type="button" id="buttonCancel" class="bg-gray-500 px-6 py-2 text-white rounded ">Cancel</button>
+                        <button type="submit" id="buttonSave" class="bg-blue-500 px-6 py-2 text-white rounded">submit</button>
                     </div>  
                 </form> 
                 </div>
@@ -122,7 +138,7 @@
 
           <!-- Notification modal -->
           <div id="noti_modal" class="fixed inset-0 flex justify-center items-center z-50 bg-gray-900 bg-opacity-50 hidden">
-            <div class="bg-white rounded shadow-xl  p-8 w-[45vw] h-[40vh]">
+            <div class="bg-white rounded shadow-xl  p-8 w-[80vw]  h-[36vh] lg:w-[45vw] lg:h-[40vh]">
                 <div class="flex justify-end">
                    <button id="closeBtn" class="focus:outline-none">
                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700 hover:text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -146,66 +162,137 @@
             </div>
                          
         
-
-
-  
-
-
-
-
-     <!-- Table -->
-     <div class="tablediv w-full h-[90vh] lg:w-[72vw] lg:h-[80vh]  bg-gray-200 rounded-[2vw]">
-        <div class="overflow-x-auto overflow-y-auto mt-8">
+          
+ <!-- Table -->
+     <div class="tablediv w-full h-[90vh] lg:w-[72vw] lg:h-[80vh]   bg-gray-200 rounded-[2vw]">
+        <div class=" overflow-y-auto mt-8 h-[70vh]  bg-gray-200">
             {% if hospitals %}
             <table class="table w-full divide-y divide-gray-400">
                 <!-- Table head -->
                 <thead>
                     <tr>
                         <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">SL NO</th>
-                        <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">HOSPITAL NAME</th>
-                        <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black   uppercase tracking-wider">AMOUNT</th>
-                        <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black  whitespace-nowrap uppercase tracking-wider">DATE OF REGISTER</th>
-                        <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">DATE OF RENEWAL</th>
-                        <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black   uppercase tracking-wider">RENEW</th>
-                        <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black   uppercase tracking-wider">ACTION
+                        <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">HOSPITAL NAME</th>
+                        <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black   uppercase tracking-wider">AMOUNT</th>
+                        <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black  whitespace-nowrap uppercase tracking-wider">DATE OF REGISTER</th>
+                        <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">DATE OF RENEWAL</th>
+                        <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black   uppercase tracking-wider">RENEW</th>
+                        <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black   uppercase tracking-wider">ACTION
                 </thead>
                 <!-- Table body -->
                 <tbody class=" divide-y divide-gray-400">
                     {% for hospital in hospitals %}
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap font-bold">{{ forloop.counter }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ hospital.name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ hospital.amount }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ hospital.registration_date|date:"d/m/Y" }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ hospital.renewal_date|date:"d/m/Y" }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            {% if hospital.is_renew %}
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold  bg-yellow-100 text-green-800">Renewed</span>
+                        <td class="px-4 py-4 whitespace-nowrap">{{ hospital.name }}</td>
+                        <td class="px-4 py-4 whitespace-nowrap">{{ hospital.amount }}</td>
+                        <td class="px-4 py-4 whitespace-nowrap">{{ hospital.registration_date|date:"d/m/Y" }}</td>
+                       
+                        <td class="px-4 py-4 whitespace-nowrap">{{ hospital.renewal_date|date:"d/m/Y" }}</td>
+                        <td class="px-4 py-4 whitespace-nowrap">
+                            {% if hospital.is_renewed %}
+                            <span class="text-green-800">Renewed</span>
                             {% else %}
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold  bg-green-100 text-yellow-800">Pending</span>
+                            <span class="text-yellow-800">Pending</span>
                             {% endif %}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <button type="button" > <i class="fa-solid fa-file-pen ms-3"></i></button>
-                            <button type="button" ><a href="{% url 'delete' hospital.pk %}"> <i class="fa-solid fa-trash ms-2"></i></a></button>
+                        <td class="px-4 py-4 whitespace-nowrap">
+                            <button type="button" id="edit-button"   data-id="{{ hospital.pk }}"
+                            data-name="{{ hospital.name }}"
+                            data-phone="{{ hospital.phone }}"
+                            data-email="{{ hospital.email }}"
+                            data-subscript="{{ hospital.subscript }}"
+                            data-days="{{ hospital.no_of_days }}"
+                            data-amount="{{ hospital.amount }}"
+                            data-registration-date="{{ hospital.registration_date|date:'d-m-Y' }}"
+                            data-renewal-date="{{ hospital.renewal_date|date:'d-m-Y' }}"> <i class="fa-solid fa-file-pen ms-3"></i></button>
+                            <button type="button" class="delete-button" data-href="{% url 'delete' hospital.pk %}"><i class="fa-solid fa-trash ms-2"></i></button>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
             {% else %}
-            <p class="text-center mt-4">No hospitals found.</p>
+            <p class="text-center mt-4 font-medium text-xl">No hospitals found.</p>
             {% endif %}
+           </div>
+        </div>
+  {% endblock %}
+
+      
+    </div>
+   
+
+    <!-- delete modal -->
+    <div id="delete-modal" class="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-[30vw]">
+            <h2 class="text-xl font-semibold mb-4">Confirm Deletion</h2>
+            <p class="mb-4">Do you want to delete this hospital?</p>
+            <div class="flex justify-end">
+                <button id="confirm-delete" class="bg-red-500 text-white px-4 py-2 rounded mr-2">Delete</button>
+                <button id="cancel-delete" class="bg-gray-300 px-4 py-2 rounded">Cancel</button>
+            </div>
         </div>
     </div>
+
     
+  <!-- Edit Modal -->
+<div id="edit-modal" class="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-50  hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg lg:w-[40vw] lg:h-auto ">
+        <h2 class="text-xl font-semibold mb-4">Edit Hospital</h2>
+        <form id="edit-form" method="post" action="{% url 'edit_hospital' %}">
+            {% csrf_token %}
+            <input type="hidden" name="hospital_id" id="hospital-id">
 
+            <div class="mb-4">
+                <label for="hospital-name" class="block text-sm font-semibold">Hospital Name</label>
+                <input type="text" name="name" id="hospital-name" class="w-full p-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded" required>
+            </div>
+            <div class="mb-4">
+                <label for="hospital-phone" class="block text-sm font-semibold">Phone Number</label>
+                <input type="text" name="phone" id="hospital-phone" class="w-full p-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded">
+            </div>
+            <div class="mb-4">
+                <label for="hospital-email" class="block text-sm font-semibold">Email</label>
+                <input type="text" name="email" id="hospital-email" class="w-full p-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded">
+            </div>
+            <div class="mb-4">
+                <label for="hospital-subscript" class="block text-sm font-semibold">Subscription Type</label>
+                <input type="text" name="subscript" id="hospital-subscript" class="w-full p-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded">
+            </div>
+            <div  id="days-container" class="mb-4 hidden">
+                <label for="hospital-days" class="block text-sm font-semibold ">Number of days</label>
+                <input type="number" name="days" id="hospital-days" class="w-full p-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded">
+            </div>
+            <div id="amount-container" class="mb-4 hidden">
+                <label for="hospital-amount" class="block text-sm font-semibold">Amount</label>
+                <input type="number" name="amount" id="hospital-amount" class="w-full p-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded">
+            </div>
+            <div id="registration-date-container" class="mb-4 hidden">
+                <label for="hospital-registration-date" class="block text-sm font-semibold">Date of Registration</label>
+                <input type="text" name="registration_date" id="hospital-registration-date" class="w-full p-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded">
+            </div>
+            <div class="flex justify-end">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded mr-2">Save</button>
+                <button type="button" id="cancel-edit" class="bg-gray-300 px-4 py-2 rounded">Cancel</button>
+            </div>
+        </form>
+    </div>
+  </div>
+  
 
 </div>
-
-</div>
-
-  <script src="{% static 'js/register_modal.js' %}"></script>
-    <script src="{% static 'js/noti_modal.js' %}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+       
+    if (window.location.search) {
+      // Remove the query parameters
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  });
+</script>
+<script src="{% static 'js/register_modal.js' %}"></script>
+<script src="{% static 'js/noti_modal.js' %}"></script>
+<script src="{% static 'js/delete_modal.js' %}"></script>
 </body>
 </html>

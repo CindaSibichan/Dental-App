@@ -1,7 +1,10 @@
-from django.shortcuts import render , redirect
+from django.shortcuts import render , redirect ,get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from django.views import View
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from . forms import *
 # Create your views here.
@@ -27,6 +30,18 @@ class LoginPageView(View):
 
 def dashboard(request):
     hospitals = Hospital.objects.all()
+    query = request.GET.get('query')
+
+    if query:
+        
+        hospitals = hospitals.filter(name__icontains=query) 
+
+    for hospital in hospitals:
+        # hospital.subscript = hospital.subscript.strip() if hospital.subscript else 'temporary'
+        if hospital.renewal_date:
+            hospital.is_renewed = hospital.renewal_date >= datetime.now().date()
+        else:
+            hospital.is_renewed = False    
     if request.method == 'POST':
         form = HospitalForm(request.POST, request.FILES)
         if form.is_valid():
@@ -39,19 +54,43 @@ def dashboard(request):
      
         form = HospitalForm()
 
-    return render(request, 'index.html', {'hospitals': hospitals, 'form': form})
+    return render(request, 'index.html', {'hospitals': hospitals, 'form': form ,'query':query})
+
+
+
+
+def edit_hospital(request):
+    if request.method == 'POST':
+        hospital_id = request.POST.get('hospital_id')
+        print(f"Received hospital_id: {hospital_id}")
+        hospital = get_object_or_404(Hospital, pk=hospital_id)
+        form = HospitalForm(request.POST, instance=hospital)
+        if form.is_valid():
+            print("Form is valid, saving data...")
+            form.save()
+            return redirect('dashboard')
+        else:
+            print("Form is not valid")
+            print(form.errors)
+    else:
+        print("Request method is not POST")
+    return redirect('dashboard')
 
 
 def delete_hospital(request, pk):
-    doctor = Hospital.objects.get(id=pk)
-    doctor.delete()
+    hospital = get_object_or_404(Hospital, id=pk)
+    hospital.delete()
     return redirect("dashboard")
 
+def expiring_soon(request):
+    hospital = Hospital.objects.all()
+    return render(request,'expiring_soon.html',{'hospital':hospital})
+def expired(request):
+    hospital = Hospital.objects.all()
+    return render(request,'expiring_soon.html',{'hospital':hospital})
 
 
 
-
-    
 
 def logout(request):
     auth.logout(request)

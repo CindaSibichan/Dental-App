@@ -1,0 +1,64 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+
+
+
+<div class="maintablediv w-full h-[100vh] lg:w-[75vw] lg:h-screen  flex flex-col justify-center items-center pr-10 gap-4">
+    <div class="registerdiv w-[50vw] h-[9vh] lg:h-[9vh] lg:w-[25vw] bg-gray-200 flex justify-center items-center  border rounded-[1vw]">
+        <h1 class="font-medium text-sm lg:text-xl">EXPIRING SOON</h1>
+
+    </div>
+   
+<div class="tablediv w-full h-[90vh] lg:w-[72vw] lg:h-[80vh]   bg-gray-200 rounded-[2vw]">
+    <div class="overflow-x-auto overflow-y-auto mt-8 h-[70vh]  bg-gray-200">
+        {% if hospitals %}
+        <table class="table w-full divide-y divide-gray-400">
+            <!-- Table head -->
+            <thead>
+                <tr>
+                    <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">SL NO</th>
+                    <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">HOSPITAL NAME</th>
+                    <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black   uppercase tracking-wider">AMOUNT</th>
+                    <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black  whitespace-nowrap uppercase tracking-wider">DATE OF REGISTER</th>
+                    <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">DATE OF RENEWAL</th>
+                    <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black   uppercase tracking-wider">RENEW</th>
+                    <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black   uppercase tracking-wider">ACTION
+            </thead>
+            <!-- Table body -->
+            <tbody class=" divide-y divide-gray-400">
+                {% for hospital in hospitals %}
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap font-bold">{{ forloop.counter }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ hospital.name }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ hospital.amount }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ hospital.registration_date|date:"d/m/Y" }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ hospital.renewal_date|date:"d/m/Y" }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <button type="button" id="edit-button"   data-id="{{ hospital.pk }}"
+                        data-name="{{ hospital.name }}"
+                        data-phone="{{ hospital.phone }}"
+                        data-email="{{ hospital.email }}"
+                        data-subscript="{{ hospital.subscript }}"
+                        data-amount="{{ hospital.amount }}"
+                        data-registration-date="{{ hospital.registration_date|date:'d-m-Y' }}"
+                        data-renewal-date="{{ hospital.renewal_date|date:'d-m-Y' }}"> <i class="fa-solid fa-file-pen ms-3"></i></button>
+                        <button type="button" class="delete-button" data-href="{% url 'delete' hospital.pk %}"><i class="fa-solid fa-trash ms-2"></i></button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="text-center mt-4 font-medium text-xl">No hospitals found.</p>
+        {% endif %}
+       </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
