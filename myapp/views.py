@@ -47,9 +47,12 @@ def dashboard(request):
     if request.method == 'POST':
         form = HospitalForm(request.POST, request.FILES)
         if form.is_valid():
+            print("form is valid")
             form.save()
             return redirect('dashboard')
         else:
+            print("form is not valid")
+            print(form.errors)
         
             return render(request, 'index.html', {'hospitals': hospitals, 'form': form})
     else:

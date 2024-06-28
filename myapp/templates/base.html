@@ -90,15 +90,15 @@
 
           <div class="mb-4">
               <label for="hospital-name" class="block text-sm font-semibold">Hospital Name</label>
-              <input type="text" name="name" id="hospital-name" class="w-full p-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded" required>
+              <input type="text" name="name" id="hospital-name" pattern="^[a-zA-Z ]+$" class="w-full p-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded" required>
           </div>
           <div class="mb-4">
               <label for="hospital-phone" class="block text-sm font-semibold">Phone Number</label>
-              <input type="text" name="phone" id="hospital-phone" class="w-full p-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded">
+              <input type="text" name="phone" id="hospital-phone" pattern="\d{10}" class="w-full p-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded">
           </div>
           <div class="mb-4">
               <label for="hospital-email" class="block text-sm font-semibold">Email</label>
-              <input type="text" name="email" id="hospital-email" class="w-full p-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded">
+              <input type="email" name="email" id="hospital-email" pattern="^[a-z][a-z0-9._%+-]*@[a-z0-9.-]+\.[a-z]{2,}$" class="w-full p-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded">
           </div>
           <div class="mb-4">
               <label for="hospital-subscript" class="block text-sm font-semibold">Subscription Type</label>
@@ -198,6 +198,7 @@
           <div class="maintablediv w-full h-[100vh] lg:w-[75vw] lg:h-screen  flex flex-col justify-center items-center px-8 lg:px-0 lg:pr-10 gap-4">
    
               {% block content %}
+              
                        {% endblock %}
 
                </div>

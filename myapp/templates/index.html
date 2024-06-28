@@ -29,8 +29,8 @@
         
           
  <!-- Table -->
-     <div class="tablediv w-full h-[90vh] lg:w-[72vw] lg:h-[80vh]   bg-gray-200 rounded-[2vw] ">
-        <div class=" overflow-y-auto mt-8 h-[70vh]  bg-gray-200 lg:overflow-x-hidden">
+     <div class="tablediv w-full h-[70vh] lg:w-[72vw] lg:h-[80vh]   bg-gray-200 rounded-[2vw] ">
+        <div class=" overflow-y-auto mt-8 h-[70vh]  bg-gray-200 overflow-x-auto">
             {% if hospitals %}
             <table class="table w-full divide-y divide-gray-400">
                 <!-- Table head -->
@@ -43,6 +43,7 @@
                         <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">DATE OF RENEWAL</th>
                         <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">RENEW</th>
                         <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">ACTION</th>
+                        <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">STATUS</th>
                         <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">BLOCK</th>
 
                 </thead>
@@ -87,6 +88,14 @@
                             data-registration-date="{{ hospital.registration_date|date:'d-m-Y' }}"
                             data-renewal-date="{{ hospital.renewal_date|date:'d-m-Y' }}"> <i class="fa-solid fa-file-pen ms-3"></i></button>
                             <button type="button" class="delete-button"  data-href="{% url 'delete' hospital.pk %}"><i class="fa-solid fa-trash ms-2"></i></button>
+                        </td>
+                        <td class="px-4 py-4 whitespace-nowrap">
+                            {% if hospital.is_blocked %}
+                               Blocked
+                               {% else %}
+                               Unblocked
+                               {% endif %}
+
                         </td>
                         <td  class="px-4 py-4 whitespace-nowrap">
                             <form action="{% url 'block' hospital.pk %}" method="post">
