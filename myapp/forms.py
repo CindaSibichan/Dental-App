@@ -34,6 +34,13 @@ class LoginForm(forms.Form):
             raise ValidationError('Invalid username or password.')
 
         return cleaned_data 
+    
+
+def validate_email(value):
+    email_pattern = r'^[a-z][a-z0-9._%+-]*@[a-z0-9.-]+\.[a-z]{2,}$'
+    if not re.match(email_pattern, value):
+        raise ValidationError("Invalid email address. The first letter must be lowercase.")
+
 
 
 class HospitalForm(forms.ModelForm):
@@ -49,5 +56,13 @@ class HospitalForm(forms.ModelForm):
             'amount':forms.NumberInput(attrs={ 'class':'form-control block w-[60vw] sm:w-[35vw] h-[6vh] py-1 lg:py-1 pl-4 placeholder-gray-500 border border-gray-300 rounded text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs lg:text-sm  '}),
             'registration_date':forms.DateInput(attrs={  'class':'form-control block w-[60vw] sm:w-[35vw] h-[6vh] py-1 lg:py-1 pl-4 placeholder-gray-500 border border-gray-300 rounded text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs lg:text-sm ','type':'date'}),
 }
+        validators = {
+            'email': [validate_email],
+            
+        }
     
+    def __init__(self, *args, **kwargs):
+        super(HospitalForm, self).__init__(*args, **kwargs)
+        if self.instance and self.instance.subscript == 'Temporary':
+            self.fields.pop('registration_date', None)  
    

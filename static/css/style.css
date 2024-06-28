@@ -68,13 +68,14 @@
 /* Scrollwidth */
 ::-webkit-scrollbar {
   width: 8px; 
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #f1f1f1; 
+  background-color: rgba(241, 241, 241, 0.5);
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #bbb3b3; 
+  background-color: rgba(187, 179, 179, 0.5); /* Semi-transparent thumb */
   border-radius: 4px; 
 }

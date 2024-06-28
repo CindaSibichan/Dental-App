@@ -1,4 +1,4 @@
-from django.shortcuts import render , redirect ,get_object_or_404
+from django.shortcuts import render , redirect ,get_object_or_404 ,reverse
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from django.views import View
@@ -29,7 +29,7 @@ class LoginPageView(View):
         else:
             return JsonResponse({'succes':'False' ,'errors':form.errors} , status = 400)    
 
-
+@login_required(login_url='login')
 def dashboard(request):
     hospitals = Hospital.objects.all()
     query = request.GET.get('query')
@@ -58,7 +58,7 @@ def dashboard(request):
 
     return render(request, 'index.html', {'hospitals': hospitals, 'form': form ,'query':query})
 
-
+@login_required(login_url='login')
 def edit_hospital(request):
     if request.method == 'POST':
         hospital_id = request.POST.get('hospital_id')
@@ -66,7 +66,7 @@ def edit_hospital(request):
         hospital = get_object_or_404(Hospital, pk=hospital_id)
         form = HospitalForm(request.POST, instance=hospital)
         if form.is_valid():
-            print("Form is valid, saving data...")
+            print("Form is valid, saving data....")
             form.save()
             return redirect('dashboard')
         else:
@@ -76,12 +76,23 @@ def edit_hospital(request):
         print("Request method is not POST")
     return redirect('dashboard')
 
-
+@login_required(login_url='login')
 def delete_hospital(request, pk):
     hospital = get_object_or_404(Hospital, id=pk)
     hospital.delete()
     return redirect("dashboard")
 
+
+@login_required(login_url='login')
+def block(request,pk):
+    if request.method == 'POST':
+        hospital = Hospital.objects.get(pk=pk)
+        hospital.is_blocked = True
+        hospital.save()
+        return redirect(reverse('blocked-hospital'))
+    
+
+@login_required(login_url='login')
 def expiring_soon(request):
     hospitals = Hospital.objects.all()
     expiring_soon_hospitals = []
@@ -91,6 +102,11 @@ def expiring_soon(request):
     for hospital in hospitals:
         registration_date = hospital.registration_date
         renewal_date = hospital.renewal_date
+
+        if hospital.renewal_date:
+            hospital.is_renewed = hospital.renewal_date >= datetime.now().date()
+        else:
+            hospital.is_renewed = False  
         
       
         if registration_date is None or renewal_date is None:
@@ -105,22 +121,56 @@ def expiring_soon(request):
 
     return render(request, 'expiring_soon.html', {'hospital_list': expiring_soon_hospitals})
 
+@login_required(login_url='login')
+def block_hospital(request):
+    blocked_hospitals = Hospital.objects.filter(is_blocked =True)
+    for hospital in blocked_hospitals:
+       
+        if hospital.renewal_date:
+            hospital.is_renewed = hospital.renewal_date >= datetime.now().date()
+        else:
+            hospital.is_renewed = False 
+    return render(request ,'blocked.html',{'blocked_hospitals':blocked_hospitals})
 
-def delete_expiringsoon(request, pk):
-    hospital = Hospital.objects.get(id=pk)
-    hospital.delete()
-    return redirect("expiring-soon")
+
+@login_required(login_url='login')
+def unblock(request ,pk):
+    if request.method == 'POST':
+        hospital = Hospital.objects.get(pk=pk)
+        hospital.is_blocked = False
+        hospital.save()
+        return redirect(reverse('dashboard'))
+
+
+ 
+# def delete_expiringsoon(request, pk):
+#     hospital = Hospital.objects.get(id=pk)
+#     hospital.delete()
+#     return redirect("expiring-soon")
 
 
 
-
+@login_required(login_url='login')
 def expired(request):
-    hospital = Hospital.objects.all()
-    return render(request,'expiring_soon.html',{'hospital':hospital})
+    current_date = timezone.now().date()
+    expired_hospitals = Hospital.objects.filter(renewal_date__lte=current_date)
+    return render(request, 'expired.html', {'hospitals': expired_hospitals})
+
+
+@login_required(login_url='login')
+def renew_hospital(request , pk):
+    hospital = Hospital.objects.get(pk=pk)
+    if request.method == 'POST':
+        new_renewal_date = timezone.now() + timezone.timedelta(days=365)
+        hospital.renewal_date = new_renewal_date
+        hospital.is_renewal_date_explicitly_set = True
+        hospital.save()
+        return redirect('dashboard')
 
 
 
 
+@login_required(login_url='login')
 def logout(request):
     auth.logout(request)
     return redirect("login")

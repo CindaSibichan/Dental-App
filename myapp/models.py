@@ -24,6 +24,8 @@ class Hospital(models.Model):
     renewal_date = models.DateField(null=True, blank=True)
     is_renew = models.BooleanField(default=False)
     current_date = models.DateField( default=timezone.now)
+    is_blocked = models.BooleanField(default=False)
+    is_renewal_date_explicitly_set = models.BooleanField(default=False)
 
     
 
@@ -44,10 +46,11 @@ class Hospital(models.Model):
 
 @receiver(pre_save, sender=Hospital)
 def set_validity_date(sender, instance, **kwargs):
-    if instance.registration_date:
-        instance.renewal_date = instance.registration_date + timedelta(days=365)
-    else:
-        instance.renewal_date = None
+    if not instance.is_renewal_date_explicitly_set:
+        if instance.registration_date:
+            instance.renewal_date = instance.registration_date + timedelta(days=365)
+        else:
+            instance.renewal_date = None
 
         
 def __str__(self):

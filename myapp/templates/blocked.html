@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Blocked{% endblock %}
+
+{% block content %}
+<div class="registerdiv w-[50vw] h-[9vh] lg:h-[9vh] lg:w-[25vw] bg-gray-200 flex justify-center items-center  border rounded-[1vw]">
+    <h1 class="font-medium text-sm lg:text-xl">BLOCKED</h1>
+
+</div>
+
+<div class="tablediv w-full h-[90vh] lg:w-[72vw] lg:h-[80vh]   bg-gray-200 rounded-[2vw] ">
+<div class=" mt-8 h-[70vh]  bg-gray-200 overflow-x-auto overflow-y-auto">
+    
+    {% if blocked_hospitals %}
+    <table class="table w-full divide-y divide-gray-400">
+        <!-- Table head -->
+        <thead>
+            <tr>
+                <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">SL NO</th>
+                <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">HOSPITAL NAME</th>
+                <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">AMOUNT</th>
+                <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap uppercase tracking-wider">DATE OF REGISTER</th>
+                <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">DATE OF RENEWAL</th>
+                <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">RENEW</th>
+                <!-- <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">ACTION</th> -->
+                <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">STATUS</th>
+                <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">UNBLOCK</th>
+        </thead>
+        <!-- Table body -->
+        <tbody class=" divide-y divide-gray-400">
+            {% for hospital in blocked_hospitals %}
+            {% if hospital.is_blocked %}
+            <tr>
+                <td class="px-6 py-4 whitespace-nowrap font-bold">{{ forloop.counter }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ hospital.name }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ hospital.amount }}</td>
+                <td class="px-4 py-4 whitespace-nowrap">
+                    {% if hospital.subscript == 'Temporary' %}
+                    Temporary
+                {% else %}
+                    {{ hospital.registration_date|date:"d-m-Y" }}
+                {% endif %}
+                </td>
+                <td class="px-4 py-4 whitespace-nowrap">
+                    {% if hospital.subscript == 'Temporary' %}
+                        Temporary
+                    {% else %}
+                        {{ hospital.renewal_date|date:"d-m-Y" }}
+                    {% endif %}
+                </td>
+              
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        {% if hospital.is_renewed %}
+                        <span class="text-green-800 font-medium">Renewed</span>
+                        {% else %}
+                        <span class="text-yellow-800 font-medium">Pending</span>
+                        {% endif %}
+                    </td>
+               
+                <!-- <td class="px-6 py-4 whitespace-nowrap">
+                    <button type="button" class="delete-button" data-href="{% url 'delete' hospital.pk %}"><i class="fa-solid fa-trash ms-2"></i></button>
+                </td> -->
+                {% if hospital.is_blocked %}
+                <td class="px-6 py-4 whitespace-nowrap">Blocked</td>
+                {% else %}
+                <td class="px-6 py-4 whitespace-nowrap">Nill</td>
+                {% endif %}
+                <td  class="px-4 py-4 whitespace-nowrap">
+                    <form action="{% url 'unblock' hospital.pk %}" method="post">
+                        {% csrf_token %}
+                    <button type="submit" class="bg-green-400 hover:bg-green-700 text-white font-bold py-1 px-2 rounded ">Unblock</button>
+                </form>
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="text-center mt-4 font-medium text-xl">No hospitals are Blocked.</p>
+    {% endif %}
+   </div>
+</div>
+
+{% endblock %}
