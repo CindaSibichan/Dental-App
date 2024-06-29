@@ -22,10 +22,10 @@
                     <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">SL NO</th>
                     <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">HOSPITAL NAME</th>
                     <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">AMOUNT</th>
-                    <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap uppercase tracking-wider">DATE OF REGISTER</th>
-                    <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">DATE OF RENEWAL</th>
-                    <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">RENEW</th>
-                    <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">ACTION</th>
+                    <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap uppercase tracking-wider">DATE OF REGISTER</th>
+                    <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">DATE OF RENEWAL</th>
+                    <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">RENEW</th>
+                    <!-- <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">ACTION</th> -->
             </thead>
             <!-- Table body -->
             <tbody class=" divide-y divide-gray-400">
@@ -57,9 +57,9 @@
                             {% endif %}
                         </td>
                    
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <!-- <td class="px-6 py-4 whitespace-nowrap">
                         <button type="button" class="delete-button" data-href="{% url 'delete' hospital.pk %}"><i class="fa-solid fa-trash ms-2"></i></button>
-                    </td>
+                    </td> -->
                 </tr>
                 {% endfor %}
             </tbody>

@@ -23,7 +23,7 @@
                 <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">DATE OF RENEWAL</th>
                 <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">VALIDITY</th>
                 <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">RENEW</th>
-                <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">ACTION</th>
+                <!-- <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">ACTION</th> -->
         </thead>
         <!-- Table body -->
         <tbody class=" divide-y divide-gray-400">
@@ -32,14 +32,14 @@
                 <td class="px-6 py-4 whitespace-nowrap font-bold">{{ forloop.counter }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">{{ hospital.name }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">{{ hospital.amount }}</td>
-                <td class="px-4 py-4 whitespace-nowrap">
+                <td class="px-6 py-4 whitespace-nowrap">
                     {% if hospital.subscript == 'Temporary' %}
                     Temporary
                 {% else %}
                     {{ hospital.registration_date|date:"d-m-Y" }}
                 {% endif %}
                 </td>
-                <td class="px-4 py-4 whitespace-nowrap">
+                <td class="px-6 py-4 whitespace-nowrap">
                     {% if hospital.subscript == 'Temporary' %}
                         Temporary
                     {% else %}
@@ -61,9 +61,9 @@
                         <button type="submit" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded ">Renew</button>
                     </form>
                     
-                    <td class="px-4 py-4 whitespace-nowrap"> 
+                    <!-- <td class="px-4 py-4 whitespace-nowrap"> 
                         <button type="button" class="delete-button" data-href="{% url 'delete' hospital.pk %}"><i class="fa-solid fa-trash ms-2"></i></button>
-                    </td>
+                    </td> -->
                
                
             </tr>

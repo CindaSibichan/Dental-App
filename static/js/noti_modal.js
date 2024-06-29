@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modalNoti.classList.remove('active');
     });
 
-    // Optional: Close the modal when clicking outside of it
+  
     window.addEventListener('click', (e) => {
         if (e.target == modalNoti) {
             modal.classList.remove('active');
