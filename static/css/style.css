@@ -79,3 +79,17 @@
   background-color: rgba(187, 179, 179, 0.5); /* Semi-transparent thumb */
   border-radius: 4px; 
 }
+
+/* filter registration date */
+
+.year-select-container {
+  display: flex; /* Aligns children horizontally */
+  align-items: center;
+  gap:20px ;
+}
+
+.year-select-container a {
+  display: flex; 
+  align-items: center; 
+  gap: 20px; 
+}

@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 from datetime import timedelta
 from django.views.decorators.csrf import csrf_protect
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from . forms import *
@@ -27,16 +28,28 @@ class LoginPageView(View):
             else:
                 return JsonResponse({'succes':'False'}, status = 401)
         else:
-            return JsonResponse({'succes':'False' ,'errors':form.errors} , status = 400)    
-
+            return JsonResponse({'succes':'False' ,'errors':form.errors} , status = 400)   
+         
+# dashboard
 @login_required(login_url='login')
 def dashboard(request):
-    hospitals = Hospital.objects.all()
+    start_year_str = request.GET.get('startYear')
+    end_year_str = request.GET.get('endYear')
     query = request.GET.get('query')
+    hospitals = Hospital.objects.filter(is_blocked=False).order_by('id')
+    if not (start_year_str or end_year_str or query):
+        hospitals = Hospital.objects.filter(is_blocked=False).order_by('id')
+    else:
+        start_year = int(start_year_str) if start_year_str else None
+        end_year = int(end_year_str) if end_year_str else None    
 
-    if query:
-        
-        hospitals = hospitals.filter(name__icontains=query) 
+        if query:
+            hospitals = hospitals.filter(name__icontains=query) 
+        elif start_year and end_year:
+            hospitals = Hospital.objects.filter(Q(registration_date__year__range=[start_year, end_year])).order_by('id') 
+        else:
+            hospitals = Hospital.objects.filter(is_blocked=False).order_by('id')
+
 
     for hospital in hospitals:
        
@@ -61,6 +74,8 @@ def dashboard(request):
 
     return render(request, 'index.html', {'hospitals': hospitals, 'form': form ,'query':query})
 
+
+# Edit hospitals
 @login_required(login_url='login')
 def edit_hospital(request):
     if request.method == 'POST':
@@ -79,13 +94,14 @@ def edit_hospital(request):
         print("Request method is not POST")
     return redirect('dashboard')
 
+# delete hospital
 @login_required(login_url='login')
 def delete_hospital(request, pk):
     hospital = get_object_or_404(Hospital, id=pk)
     hospital.delete()
     return redirect("dashboard")
 
-
+# block
 @login_required(login_url='login')
 def block(request,pk):
     if request.method == 'POST':
@@ -95,12 +111,18 @@ def block(request,pk):
         return redirect(reverse('blocked-hospital'))
     
 
+# Expiring soon
 @login_required(login_url='login')
 def expiring_soon(request):
     hospitals = Hospital.objects.all()
+    query = request.GET.get('query')
     expiring_soon_hospitals = []
 
     current_date = timezone.now().date()
+
+    if query:
+        
+        hospitals = hospitals.filter(name__icontains=query)
 
     for hospital in hospitals:
         registration_date = hospital.registration_date
@@ -122,20 +144,28 @@ def expiring_soon(request):
         if expiring_soon_threshold <= current_date <= renewal_date:
             expiring_soon_hospitals.append(hospital)
 
-    return render(request, 'expiring_soon.html', {'hospital_list': expiring_soon_hospitals})
+    return render(request, 'expiring_soon.html', {'hospital_list': expiring_soon_hospitals ,'query':query})
 
+
+# Details of blocked hospitals
 @login_required(login_url='login')
 def block_hospital(request):
     blocked_hospitals = Hospital.objects.filter(is_blocked =True)
+    query = request.GET.get('query')
+
+    if query:
+        
+        blocked_hospitals = blocked_hospitals.filter(name__icontains=query)
     for hospital in blocked_hospitals:
        
         if hospital.renewal_date:
             hospital.is_renewed = hospital.renewal_date >= datetime.now().date()
         else:
             hospital.is_renewed = False 
-    return render(request ,'blocked.html',{'blocked_hospitals':blocked_hospitals})
+    return render(request ,'blocked.html',{'blocked_hospitals':blocked_hospitals ,'query':query})
 
 
+# unblock
 @login_required(login_url='login')
 def unblock(request ,pk):
     if request.method == 'POST':
@@ -153,13 +183,20 @@ def unblock(request ,pk):
 
 
 
+# Expired hospitals
 @login_required(login_url='login')
 def expired(request):
     current_date = timezone.now().date()
+    query = request.GET.get('query')
     expired_hospitals = Hospital.objects.filter(renewal_date__lte=current_date)
-    return render(request, 'expired.html', {'hospitals': expired_hospitals})
+    if query:
+        
+        expired_hospitals = expired_hospitals.filter(name__icontains=query)
+   
+    return render(request, 'expired.html', {'hospitals': expired_hospitals ,'query':query})
 
 
+# renew 
 @login_required(login_url='login')
 def renew_hospital(request , pk):
     hospital = Hospital.objects.get(pk=pk)

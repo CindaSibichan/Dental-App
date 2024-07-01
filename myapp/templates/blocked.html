@@ -4,9 +4,24 @@
 {% block title %}Blocked{% endblock %}
 
 {% block content %}
+
+
+<div class="w-full flex lg:flex-row gap-20 justify-end">
 <div class="registerdiv w-[50vw] h-[9vh] lg:h-[9vh] lg:w-[25vw] bg-gray-200 flex justify-center items-center  border rounded-[1vw]">
     <h1 class="font-medium text-sm lg:text-xl">BLOCKED</h1>
 
+</div>
+<form action="{% url 'blocked-hospital' %}" method="get" id="search-form">
+    <div class="relative">
+        <input type="text" id="searchInput" placeholder="Search......" name="query" class="px-4 py-1  border-2 border-gray-400 rounded focus:outline-none focus:border-gray-600 pl-10">
+        
+        <div id="search-icon" class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <!-- Search Icon SVG -->
+          <button> <a href=""> <img src="{% static 'images/search.svg' %}" alt="" ></a></button>
+          
+        </div>
+      </div>
+    </form>
 </div>
 
 <div class="tablediv w-full h-[70vh] lg:w-[72vw] lg:h-[80vh]   bg-gray-200 rounded-[2vw] ">
@@ -78,9 +93,18 @@
         </tbody>
     </table>
     {% else %}
-    <p class="text-center mt-4 font-medium text-xl">No hospitals are Blocked.</p>
+    <p class="text-center mt-4 font-medium text-xl">No hospitals found.</p>
     {% endif %}
    </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+           
+        if (window.location.search) {
+          // Remove the query parameters
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+      });
+    </script>
 
 {% endblock %}
