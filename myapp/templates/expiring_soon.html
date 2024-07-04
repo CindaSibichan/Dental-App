@@ -13,15 +13,19 @@
     </div>
  
     <form action="{% url 'expiring-soon' %}" method="get" id="search-form">
-        <div class="relative">
-            <input type="text" id="searchInput" placeholder="Search......" name="query" class="px-4 py-1  border-2 border-gray-400 rounded focus:outline-none focus:border-gray-600 pl-10">
-            
-            <div id="search-icon" class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <!-- Search Icon SVG -->
-              <button> <a href=""> <img src="{% static 'images/search.svg' %}" alt="" ></a></button>
-              
+        <div class="flex items-center justify-between  p-4">
+            <div class="flex items-center space-x-4">
+                <button class="text-gray-600 hover:text-gray-900 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <input type="text" placeholder="Search..." name="query" class="py-1 px-4 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
             </div>
-          </div>
+            <button class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-4 rounded-md focus:outline-none">
+                Search
+            </button>
+        </div>
         </form>
  
     </div>
@@ -52,28 +56,35 @@
                         {% if hospital.subscript == 'Temporary' %}
                         Temporary
                     {% else %}
-                        {{ hospital.registration_date|date:"d-m-Y" }}
+                        {{ hospital.registration_date|date:"d/m/Y" }}
                     {% endif %}
                     </td>
                     <td class="px-4 py-4 whitespace-nowrap">
                         {% if hospital.subscript == 'Temporary' %}
                             Temporary
                         {% else %}
-                            {{ hospital.renewal_date|date:"d-m-Y" }}
+                            {{ hospital.renewal_date|date:"d/m/Y" }}
                         {% endif %}
                     </td>
                   
-                        <td class="px-4 py-4 whitespace-nowrap">
+                        <!-- <td class="px-4 py-4 whitespace-nowrap">
                             {% if hospital.is_renewed %}
                             <span class="text-green-800 font-medium">Renewed</span>
                             {% else %}
                             <span class="text-yellow-800 font-medium">Pending</span>
                             {% endif %}
+                        </td> -->
+                        <td  class="px-4 py-4 whitespace-nowrap">
+                            <form id="renewForm-{{ hospital.pk }}" class="renewForm" action="{% url 'renew' hospital.pk %}" method="post">
+                                {% csrf_token %}
+                           
+                            <button type="submit" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded ">Renew</button>
+                        </form>
                         </td>
-                   
                     <!-- <td class="px-6 py-4 whitespace-nowrap">
                         <button type="button" class="delete-button" data-href="{% url 'delete' hospital.pk %}"><i class="fa-solid fa-trash ms-2"></i></button>
                     </td> -->
+
                 </tr>
                 {% endfor %}
             </tbody>
@@ -82,6 +93,16 @@
         <p class="text-center mt-4 font-medium text-xl">No hospitals found.</p>
         {% endif %}
        </div>
+            <!-- Renew Modal -->
+<div id="renewModal" class="fixed inset-0 flex items-center z-50 justify-center bg-gray-900 bg-opacity-50 hidden">
+    <div class="bg-white p-6 rounded shadow-md w-[30vw]">
+        <p class="font-medium text-2xl" id="renewModalMessage">Renewed Successfully</p>
+        <p class="font-bold">Renewal Date: <span id="newRenewalDate" class="font-bold"></span></p>
+        <div class="flex justify-end mt-4">
+            <button  id="closerenewModalBtn"  class="bg-red-600 hover:bg-red-700 text-white py-1 px-2 rounded">Close</button>
+        </div>
+    </div>
+</div>
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -92,6 +113,45 @@
             }
           });
         </script>
+        
+<script>
+     $(document).ready(function () {
+    $('.renewForm').on('submit', function (event) {
+        event.preventDefault(); 
+        var form = $(this);
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: form.attr('action'),
+            method: form.attr('method'),
+            data: formData,
+            processData: false,
+            contentType: false,
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            },
+            success: function (data) {
+                if (data.success) {
+                    // Show the success modal
+                    $('#renewModalMessage').text('Renewed Successfully');
+                    $('#newRenewalDate').text(data.new_renewal_date);
+                    $('#renewModal').removeClass('hidden');
+                } else {
+                    alert('Renewal failed: ' + data.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+
+    $('#closerenewModalBtn').on('click', function () {
+        $('#renewModal').addClass('hidden');
+        window.location.href = '/dashboard'; 
+    });
+});
+</script>
 
 {% endblock %}
 

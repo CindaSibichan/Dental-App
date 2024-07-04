@@ -13,6 +13,7 @@ urlpatterns = [
     path('blocked/',views.block_hospital , name="blocked-hospital"),
     path('expired/',views.expired , name="expired"),
     path('renew/<int:pk>/',views.renew_hospital , name="renew"),
+    path('payment/',views.payments , name="payment"),
     path('logout/',views.logout, name="logout"),
     
 ]

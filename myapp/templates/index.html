@@ -3,16 +3,16 @@
 {% load static %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
-    <div class="w-full flex flex-col lg:flex-row gap-10 justify-end">
-    <div class="registerdiv w-[50vw] h-[9vh] lg:h-[9vh] lg:w-[25vw] bg-gray-200 flex justify-center items-center  border rounded-[1vw]">
-        <button id="openmodal"><h1 class="font-medium text-sm lg:text-xl">REGISTER A NEW HOSPITAL</h1></button>
+    <div class="w-full flex flex-col lg:flex-row gap-10 justify-between">
+    <div class="registerdiv w-[50vw] h-[9vh] lg:h-[9vh] lg:w-[25vw] hover:bg-gray-700 bg-gray-500 flex justify-center items-center rounded-[1vw] ">
+        <button id="openmodal"><h1 class="font-medium text-white text-sm lg:text-xl">REGISTER A NEW HOSPITAL</h1></button>
 
     </div>
     <form id="year-range-form" action="{% url 'dashboard' %}" method="get"  class=" items-center relative">
          <button type="button" title="Filter" id="dropdownButton"> 
             <img src="{% static 'images/filter.png' %}" alt="filter image" class="lg:w-[50%] w-[40%]">
          </button>
-         <div id="dropdownMenu" class="hidden origin-top-left absolute border z-50 border-gray-300 left-0  mt-2 w-[90vw] h-[10vh] lg:w-[27vw] lg:h-[18vh]
+         <div id="dropdownMenu" class="hidden origin-top-left absolute border z-50 border-gray-300 left-0  mt-4 w-[90vw] h-[10vh] lg:w-[27vw] lg:h-[18vh]
          rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 ">
             <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="dropdownButton">
                
@@ -41,15 +41,20 @@
 
     </form>
     <form action="{% url 'dashboard' %}" method="get" id="search-form">
-        <div class="relative">
-            <input type="text" id="searchInput" placeholder="Search......" name="query" class="px-4 py-1  border-2 border-gray-400 rounded focus:outline-none focus:border-gray-600 pl-10">
-            
-            <div id="search-icon" class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <!-- Search Icon SVG -->
-              <button> <a href=""> <img src="{% static 'images/search.svg' %}" alt="" ></a></button>
-              
+        <div class="flex items-center justify-between  p-4">
+            <div class="flex items-center space-x-4">
+                <button class="text-gray-600 hover:text-gray-900 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <input type="text" placeholder="Search..." name="query" class="py-1 px-4 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
             </div>
-          </div>
+            <button class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-4 rounded-md focus:outline-none">
+                Search
+            </button>
+        </div>
+        
         </form>
         <!-- <ul id="suggestions"></ul> -->
       
@@ -75,7 +80,7 @@
                         <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black whitespace-nowrap  uppercase tracking-wider">DATE OF RENEWAL</th>
                         <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">RENEW</th>
                        
-                        <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">STATUS</th>
+                        <!-- <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">STATUS</th> -->
                         <th class="px-4 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">BLOCK</th>
                         <th class="px-6 py-3 text-left text-sm leading-4 font-bold text-black uppercase tracking-wider">ACTION</th>
 
@@ -91,7 +96,7 @@
                             {% if hospital.subscript == 'Temporary' %}
                             Temporary
                         {% else %}
-                            {{ hospital.registration_date|date:"d-m-Y" }}
+                            {{ hospital.registration_date|date:"d/m/Y" }}
                         {% endif %}
                         </td>
                        
@@ -99,7 +104,7 @@
                         {% if hospital.subscript == 'Temporary' %}
                             Temporary
                         {% else %}
-                            {{ hospital.renewal_date|date:"d-m-Y" }}
+                            {{ hospital.renewal_date|date:"d/m/Y" }}
                         {% endif %}
                     </td>
 
@@ -111,18 +116,18 @@
                             {% endif %}
                         </td>
                         
-                        <td class="px-4 py-4 whitespace-nowrap">
+                        <!-- <td class="px-4 py-4 whitespace-nowrap">
                             {% if hospital.is_blocked %}
                                Blocked
                                {% else %}
                                Unblocked
                                {% endif %}
 
-                        </td>
+                        </td> -->
                         <td  class="px-4 py-4 whitespace-nowrap">
-                            <form action="{% url 'block' hospital.pk %}" method="post">
+                            <form class="blockForm"  action="{% url 'block' hospital.pk %}" method="post">
                                 {% csrf_token %}
-                            <button type="submit" class="bg-red-400 hover:bg-red-700 text-white font-bold py-1 px-2 rounded ">Block</button>
+                            <button type="button"  class="blockBtn bg-red-400 hover:bg-red-700 text-white font-bold py-1 px-2 rounded ">Block</button>
                         </form>
                         </td>
                         <td class="px-4 py-4 whitespace-nowrap">
@@ -133,8 +138,8 @@
                             data-subscript="{{ hospital.subscript }}"
                             data-days="{{ hospital.no_of_days }}"
                             data-amount="{{ hospital.amount }}"
-                            data-registration-date="{{ hospital.registration_date|date:'d-m-Y' }}"
-                            data-renewal-date="{{ hospital.renewal_date|date:'d-m-Y' }}"> <i class="fa-solid fa-file-pen ms-3"></i></button>
+                            data-registration-date="{{ hospital.registration_date|date:'d/m/Y' }}"
+                            data-renewal-date="{{ hospital.renewal_date|date:'d/m/Y' }}"> <i class="fa-solid fa-file-pen ms-3"></i></button>
                             <button type="button" class="delete-button"  data-href="{% url 'delete' hospital.pk %}"><i class="fa-solid fa-trash ms-2"></i></button>
                         </td>
                     </tr>
@@ -157,6 +162,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 </script>
 <script src="{% static 'js/register_modal.js' %}"></script>
+<script src="{% static 'js/block_modal.js' %}"></script>
 <script src="{% static 'js/noti_modal.js' %}"></script>
 <script src="{% static 'js/delete_modal.js' %}"></script>
 <script src="{% static 'js/filter.js' %}"></script>

@@ -20,29 +20,13 @@ class Hospital(models.Model):
     subscript = models.CharField(max_length=13 , choices=TYPE_CHOICES ,default='Select a type')
     no_of_days = models.IntegerField(null=True, blank=True,default=0)
     amount = models.CharField(max_length=200,null=True, blank=True,default='0')
-    registration_date = models.DateField(null=True, blank=True)
+    registration_date = models.DateField( null=True, blank=True)
     renewal_date = models.DateField(null=True, blank=True)
     is_renew = models.BooleanField(default=False)
     current_date = models.DateField( default=timezone.now)
     is_blocked = models.BooleanField(default=False)
     is_renewal_date_explicitly_set = models.BooleanField(default=False)
 
-    
-
-# @receiver(pre_save, sender=Hospital)
-# def set_validity_date(sender, instance, **kwargs):
-#     if instance.registration_date:
-#         instance.renewal_date = instance.registration_date + timedelta(days=365)
-#     else:
-#         instance.renewal_date = None
-    
-#     if instance.pk:  
-#         previous_instance = sender.objects.get(pk=instance.pk)
-       
-#         if instance.renewal_date!= previous_instance.renewal_date:
-#             instance.renewal_date = instance.registration_date + timedelta(days=365)
-#     else:  
-#         instance.renewal_date = instance.registration_date + timedelta(days=365)
 
 @receiver(pre_save, sender=Hospital)
 def set_validity_date(sender, instance, **kwargs):

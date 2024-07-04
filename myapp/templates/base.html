@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <title>{% block title %}Dental{% endblock %}</title>
 </head>
 <body class="bg-white lg:overflow-hidden">
@@ -31,7 +32,7 @@
 
                    
           <!-- Notification modal -->
-          <div id="noti_modal" class="fixed inset-0 flex justify-center items-center z-50 bg-gray-900 bg-opacity-50 hidden">
+          <!-- <div id="noti_modal" class="fixed inset-0 flex justify-center items-center z-50 bg-gray-900 bg-opacity-50 hidden">
             <div class="bg-white rounded shadow-xl  p-8 w-[80vw]  h-[36vh] lg:w-[45vw] lg:h-[40vh]">
                 <div class="flex justify-end">
                    <button id="closeBtn" class="focus:outline-none">
@@ -45,7 +46,7 @@
                                </div>
                                <div class="h-[1px] p-0 w-full bg-gray-300"></div>
                                <div class="w-full flex  pb-6">
-                                   <h1>This is a Notification Message</h1>
+                                <h1 id="notificationMessage"></h1>
                        </div>
                       <div class="h-[1px] p-0 w-full bg-gray-300"></div>
                        
@@ -53,7 +54,7 @@
                         <button type="button" id="buttonClose" class="items-center justify-center  bg-gray-400 px-6 py-1 text-white rounded ">Close</button>
                       </div> 
                 </div>
-            </div>
+            </div> -->
 
  <!-- main buttons -->
 
@@ -62,6 +63,7 @@
                           <button class="bg-[#fde9e9]  lg:w-[15vw] h-[5vh] rounded-lg hover:bg-white"><a href="{% url 'expiring-soon' %}">Expiring Soon</a></button>
                           <button class="bg-[#fde9e9] lg:w-[15vw] h-[5vh] rounded-lg hover:bg-white"><a href="{% url 'expired' %}">Expired</a></button>   
                           <button class="bg-[#fde9e9] lg:w-[15vw] h-[5vh] rounded-lg hover:bg-white"><a href="{% url 'blocked-hospital' %}">Blocked</a></button>
+                          <button class="bg-[#fde9e9] lg:w-[15vw] h-[5vh] rounded-lg hover:bg-white"><a href="{% url 'payment' %}">Payments</a></button>
 
                       </div>
 
@@ -99,7 +101,7 @@
           </div>
           <div class="mb-4">
               <label for="hospital-email" class="block text-sm font-semibold">Email</label>
-              <input type="email" name="email" id="hospital-email" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" class="w-full p-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded">
+              <input type="email" name="email" id="hospital-email"   class="w-full p-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded">
           </div>
           <div class="mb-4">
               <label for="hospital-subscript" class="block text-sm font-semibold">Subscription Type</label>
@@ -188,12 +190,57 @@
                      </div>
                  
                  <div class="w-full flex justify-start gap-4">
-                     <button type="button" id="buttonCancel" class="bg-gray-500 px-6 py-2 text-white rounded ">Cancel</button>
-                     <button type="submit" id="buttonSave" class="bg-blue-500 px-6 py-2 text-white rounded">submit</button>
+                     <button type="button" id="buttonReset" class="bg-gray-500 px-6 py-2 text-white rounded ">Reset</button>
+                     <button type="submit" id="buttonSave" class="bg-blue-500 px-6 py-2 text-white rounded">Submit</button>
                  </div>  
              </form> 
              </div>
          </div>
+         <!-- Confirmation ResetModal -->
+<!-- <div id="confirmationModal" class="fixed inset-0 flex items-center justify-center hidden" >
+    <div class="bg-white p-5 rounded-lg shadow-lg w-full max-w-md">
+        <h2 class="text-lg font-semibold mb-4">Confirmation Required</h2>
+        <p class="mb-4">Are you sure you want to reset the form?</p>
+        <div class="flex justify-end space-x-2">
+            <button id="confirmReset" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Yes</button>
+            <button id="cancelReset" class="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400">No</button>
+        </div>
+    </div>
+</div> -->
+
+
+         <!--Registration Success Modal -->
+    <!-- <div id="successModal" class="fixed inset-0 flex justify-center items-center z-50 bg-gray-900 bg-opacity-50 hidden">
+         <div class="bg-white rounded shadow-xl p-6">
+             <h1 class="text-2xl text-center">Hospital Registered Successfully!</h1>
+              <button id="closeSuccessModalBtn" class="bg-blue-500 px-6 py-2 text-white rounded mt-4">Close</button>
+          </div>
+    </div> -->
+    <!-- confirm block modal -->
+    <div id="confirmationModal" class="fixed inset-0 flex items-center z-50 justify-center bg-gray-900 bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded shadow-md">
+            <p class="font-medium text-xl">Are you sure you want to block this hospital?</p>
+            <div class="flex justify-end mt-4">
+                <button id="confirmBtn" class="bg-green-500 hover:bg-green-700 text-white  py-1 px-2 rounded mr-2">YES</button>
+                <button id="cancelBtn" class="bg-red-600 hover:bg-red-700 text-white  py-1 px-2 rounded">NO</button>
+            </div>
+        </div>
+    </div>
+
+        <!-- confirm unblock modal -->
+        <div id="confirmationUnblockModal" class="fixed inset-0 flex items-center z-50 justify-center bg-gray-900 bg-opacity-50 hidden">
+            <div class="bg-white p-6 rounded shadow-md">
+                <p class="font-medium text-xl">Are you sure you want to Unblock this hospital?</p>
+                <div class="flex justify-end mt-4">
+                    <button id="confirmUnblockBtn" class="bg-green-500 hover:bg-green-700 text-white  py-1 px-2 rounded mr-2">YES</button>
+                    <button id="cancelUnblockBtn" class="bg-red-600 hover:bg-red-700 text-white py-1 px-2 rounded">NO</button>
+                </div>
+            </div>
+        </div>
+
+        
+
+
 
          <!-- child block contents -->
           <div class="maintablediv w-full h-[130vh] lg:w-[75vw] lg:h-screen  flex flex-col justify-center items-center px-8 lg:px-0 lg:pr-10 gap-4">
@@ -205,10 +252,10 @@
                </div>
 
     </div>
-
-
+   
     <script src="{% static 'js/noti_modal.js' %}"></script>  
     <script src="{% static 'js/delete_modal.js' %}"></script>
+    <script src="{% static 'js/block_modal.js' %}"></script>
     <!-- <script src="{% static 'js/register_modal.js' %}"></script> -->
 </body>
 </html>

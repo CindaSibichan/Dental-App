@@ -28,14 +28,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var startYearSelect = document.getElementById('startYearSelect');
     var currentYear = new Date().getFullYear();
-    for (var year = 2000; year <= currentYear; year++) {
+    for (var year = 2020; year <= 2035; year++) {
         var option = document.createElement('option');
         option.text = option.value = year;
         startYearSelect.add(option);
     }
 
     var endYearSelect = document.getElementById('endYearSelect');
-    for (var year = 2000; year <= currentYear; year++) {
+    for (var year = 2020; year <= 2035; year++) {
         var option = document.createElement('option');
         option.text = option.value = year;
         endYearSelect.add(option);

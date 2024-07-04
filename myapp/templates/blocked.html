@@ -12,15 +12,19 @@
 
 </div>
 <form action="{% url 'blocked-hospital' %}" method="get" id="search-form">
-    <div class="relative">
-        <input type="text" id="searchInput" placeholder="Search......" name="query" class="px-4 py-1  border-2 border-gray-400 rounded focus:outline-none focus:border-gray-600 pl-10">
-        
-        <div id="search-icon" class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <!-- Search Icon SVG -->
-          <button> <a href=""> <img src="{% static 'images/search.svg' %}" alt="" ></a></button>
-          
+    <div class="flex items-center justify-between  p-4">
+        <div class="flex items-center space-x-4">
+            <button class="text-gray-600 hover:text-gray-900 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <input type="text" placeholder="Search..." name="query" class="py-1 px-4 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
         </div>
-      </div>
+        <button class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-4 rounded-md focus:outline-none">
+            Search
+        </button>
+    </div>
     </form>
 </div>
 
@@ -54,14 +58,14 @@
                     {% if hospital.subscript == 'Temporary' %}
                     Temporary
                 {% else %}
-                    {{ hospital.registration_date|date:"d-m-Y" }}
+                    {{ hospital.registration_date|date:"d/m/Y" }}
                 {% endif %}
                 </td>
                 <td class="px-4 py-4 whitespace-nowrap">
                     {% if hospital.subscript == 'Temporary' %}
                         Temporary
                     {% else %}
-                        {{ hospital.renewal_date|date:"d-m-Y" }}
+                        {{ hospital.renewal_date|date:"d/m/Y" }}
                     {% endif %}
                 </td>
               
@@ -82,9 +86,9 @@
                 <td class="px-6 py-4 whitespace-nowrap">Nill</td>
                 {% endif %}
                 <td  class="px-4 py-4 whitespace-nowrap">
-                    <form action="{% url 'unblock' hospital.pk %}" method="post">
+                    <form class="unblockForm" action="{% url 'unblock' hospital.pk %}" method="post">
                         {% csrf_token %}
-                    <button type="submit" class="bg-green-400 hover:bg-green-700 text-white font-bold py-1 px-2 rounded ">Unblock</button>
+                    <button type="button" class="unblockBtn bg-green-400 hover:bg-green-700 text-white font-bold py-1 px-2 rounded ">Unblock</button>
                 </form>
                 </td>
             </tr>

@@ -16,13 +16,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     
         if (!usernamePattern.test(username)) {
-            errorMessage.textContent = 'Invalid username format.';
+            errorMessage.textContent = 'Invalid username .';
             return;
         }
 
     
         if (!passwordPattern.test(password)) {
-            errorMessage.textContent = 'Invalid password format.';
+            errorMessage.textContent = 'Invalid password .';
             return;
         
         }

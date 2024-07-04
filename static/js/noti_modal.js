@@ -1,28 +1,20 @@
-// Notification modal
-document.addEventListener('DOMContentLoaded', () => {
-    const openModal = document.getElementById('noti-open-model');
-    const closeModal = document.getElementById('closeBtn');
-    const modalNoti = document.getElementById('noti_modal');
-    const buttonClose = document.getElementById('buttonClose');
+// // Notification modal
+// document.addEventListener("DOMContentLoaded", function() {
+//     // Get the notification message from Django messages framework
+//     var notificationMessage = "{{ notification_message }}";
 
-    openModal.addEventListener('click', () => {
-        modalNoti.classList.add('active');
-    });
+//     if (notificationMessage) {
+//         // Display the modal
+//         document.getElementById("noti_modal").classList.remove("hidden");
+//         document.getElementById("notificationMessage").innerText = notificationMessage;
+//     }
 
-    closeModal.addEventListener('click', () => {
-        modalNoti.classList.remove('active');
-        
-    });
-    buttonClose.addEventListener('click', () => {
-        modalNoti.classList.remove('active');
-    });
+//     // Close modal functionality
+//     document.getElementById("closeBtn").addEventListener("click", function() {
+//         document.getElementById("noti_modal").classList.add("hidden");
+//     });
 
-  
-    window.addEventListener('click', (e) => {
-        if (e.target == modalNoti) {
-            modal.classList.remove('active');
-        }
-    });
-});
-
-
+//     document.getElementById("buttonClose").addEventListener("click", function() {
+//         document.getElementById("noti_modal").classList.add("hidden");
+//     });
+// });

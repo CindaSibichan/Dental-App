@@ -34,11 +34,11 @@
                     <p class="">{{ form.username }}</p>
                 </div>
             </div>
-            <div class="flex flex-col relative">
+            <div class="password-container flex flex-col relative">
                 <!-- <div class="flex flex-col justify-start gap-4"> -->
                     <label for="username" class="font-bold text-xl">Password : </label>
                 <p class="mt-2">{{ form.password }}</p>
-                <span class="absolute inset-y-0 right-0 pr-3 mt-8 flex items-center text-sm leading-5 cursor-pointer" onclick="togglePasswordVisibility()">
+                <span class="password-toggle-icon absolute inset-y-0 right-0 pr-3 mt-14 flex items-center text-sm leading-5 cursor-pointer" onclick="togglePasswordVisibility()">
                   <!-- Use an inline SVG for the eye icon -->
                   <svg id="eye-icon" class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -70,21 +70,34 @@
                 const passwordField = document.querySelector('input[name="password"]');
                 const eyeIcon = document.getElementById('eye-icon');
                 
+                // Check if the cross line already exists
+                const existingCrossLine = eyeIcon.querySelector('path[data-cross]');
+            
                 if (passwordField.type === 'password') {
                     passwordField.type = 'text';
-                    eyeIcon.innerHTML = `
-                        <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-                    `;
+                    
+                    if (!existingCrossLine) {
+                        // Create and add the cross line
+                        const crossPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                        crossPath.setAttribute("d", "M2 2l20 20");
+                        crossPath.setAttribute("stroke-linecap", "round");
+                        crossPath.setAttribute("stroke-linejoin", "round");
+                        crossPath.setAttribute("stroke-width", "2");
+                        crossPath.setAttribute("stroke", "black");
+                        crossPath.setAttribute("data-cross", "true");
+                        eyeIcon.appendChild(crossPath);
+                    }
                 } else {
                     passwordField.type = 'password';
-                    eyeIcon.innerHTML = `
-                        <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-                    `;
+                    
+                    if (existingCrossLine) {
+                        // Remove the cross line
+                        eyeIcon.removeChild(existingCrossLine);
+                    }
                 }
             }
             </script>
+            
     
 </body>
 </html>

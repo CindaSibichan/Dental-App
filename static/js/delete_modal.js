@@ -32,11 +32,14 @@ document.addEventListener('DOMContentLoaded', function () {
             const hospitalRegistrationDate = this.getAttribute('data-registration-date');
 
             // Parse the d-m-Y formatted date string
-            const [day, month, year] = hospitalRegistrationDate.split('-');
+            const [day, month, year] = hospitalRegistrationDate.split('/');
             const parsedDate = new Date(year, month - 1, day); // month - 1 because JavaScript months are 0-indexed
 
-            // Optionally format the parsed date as needed
-            const formattedDate = `${parsedDate.getFullYear()}-${parsedDate.getMonth() + 1}-${parsedDate.getDate()}`;
+       
+          
+            // Format the date as dd/mm/yyyy for display
+            const formattedDate = `${String(day).padStart(2, '0')}/${String(month).padStart(2, '0')}/${year}`;
+
 
             document.getElementById('hospital-id').value = hospitalId;
             document.getElementById('hospital-name').value = hospitalName;
@@ -60,6 +63,12 @@ document.addEventListener('DOMContentLoaded', function () {
     cancelEdit.addEventListener('click', function () {
         editModal.classList.add('hidden');
     });
+    document.getElementById('edit-form').addEventListener('submit', function (event) {
+        const dateInput = document.getElementById('hospital-registration-date');
+        const [day, month, year] = dateInput.value.split('/');
+        const formattedDate = `${year}/${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
+        dateInput.value = formattedDate; // Convert the date to yyyy-mm-dd before submitting the form
+    });
 });
 
 
@@ -69,7 +78,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Delete modal
 document.addEventListener('DOMContentLoaded', function () {
-    // Delete modal setup
     const deleteButtons = document.querySelectorAll('.delete-button'); 
     const deleteModal = document.getElementById('delete-modal');
     const confirmDelete = document.getElementById('confirm-delete');
@@ -93,3 +101,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
+
+
+
