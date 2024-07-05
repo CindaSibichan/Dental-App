@@ -43,7 +43,7 @@
     <form action="{% url 'dashboard' %}" method="get" id="search-form">
         <div class="flex items-center justify-between  p-4">
             <div class="flex items-center space-x-4">
-                <button class="text-gray-600 hover:text-gray-900 focus:outline-none">
+                <button title="Back" class="text-gray-600 bg-gray-300 hover:text-gray-900 rounded focus:outline-none">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
@@ -62,14 +62,82 @@
 
 
 
+    <!-- Register modal -->
+
+  
+   
+    <div id="modal" class="fixed inset-0 flex justify-center items-center z-50 bg-gray-900 bg-opacity-50 hidden">
+        <div class="bg-white rounded shadow-xl  p-6 w-[80vw] h-auto lg:w-[40vw]  lg:h-auto">
+            <div class="flex justify-end">
+               <button id="closeModalBtn" class="focus:outline-none">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700 hover:text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                           </svg>
+                               </button>
+                           </div>
+  
+                           <div class="w-full flex  pb-6">
+                                <h1 class="text-2xl">Register New Hospital</h1>
+                   </div>
+                  <div class="h-[1px] p-0 w-full bg-gray-300"></div>
+                  <form  id="hospitalmodal" class="text-black h-full w-full  sm:w-[35vw] flex flex-col  items-center py-5 gap-8" action=""   method="POST" enctype="multipart/form-data">
+                   {% csrf_token %}
+                   
+                         
+                              
+                       <div class="child1 flex flex-col w-full justify-center items-start gap-1 ">
+                           <div class="flex flex-col w-3/4">
+                               <label class=" font-medium text-left">Hospital Name</label>
+                            {{ form.name }}
+                           </div>
+                           <div class="flex flex-col w-3/4">
+                               <label  class=" font-medium text-left">Phone Number</label>
+                            {{ form.phone }}
+                               
+                           </div> 
+                           <div class="flex flex-col w-3/4">
+                               <label  class=" text-left font-medium">Email</label> 
+                               {{ form.email }}
+                           </div>
+                           <div class="flex flex-col w-3/4">
+                               <label  class=" text-left font-medium">Subscription Type</label>
+                             {{ form.subscript }}
+                           </div>
+                       
+                  
+                      
+                           <div class="flex flex-col  w-3/4 hidden " id="days">
+                               <label  class=" text-left font-medium ">Number of Days</label>
+                               {{ form.no_of_days }}
+                           </div>
+                           <div class="flex flex-col w-3/4 hidden" id="amount">
+                               <label  class="text-left font-medium ">Amount </label>
+                               {{ form.amount }}
+                                
+                           </div>
+                           <div class="flex flex-col w-3/4 hidden" id="register_date">
+                               <label  class="text-left font-medium ">Registration Date</label>
+                              {{ form.registration_date }}
+                                
+                           </div>
+                          
+                       </div>
+                   
+                   <div class="w-full flex justify-start gap-4">
+                       <button type="button" id="buttonReset" class="bg-gray-500 px-6 py-2 text-white rounded ">Reset</button>
+                       <button type="submit" id="buttonSave" class="bg-blue-500 px-6 py-2 text-white rounded">Submit</button>
+                   </div>  
+               </form> 
+               </div>
+           </div>
         
         
           
  <!-- Table -->
-     <div class="tablediv w-full h-[70vh] lg:w-[72vw] lg:h-[80vh]   bg-gray-200 rounded-[2vw] ">
-        <div class=" overflow-y-auto mt-8 h-[70vh]  bg-gray-200 overflow-x-auto">
+     <div  class="tablediv w-full h-[70vh] lg:w-[72vw] lg:h-[80vh]   bg-gray-200 rounded-[2vw] ">
+        <div   class=" overflow-y-auto mt-8 h-[70vh]  bg-gray-200 overflow-x-auto">
             {% if hospitals %}
-            <table class="table w-full divide-y divide-gray-400">
+            <table   id="hospitals-table" class="table w-full divide-y divide-gray-400">
                 <!-- Table head -->
                 <thead>
                     <tr>
@@ -89,7 +157,7 @@
                 <tbody class=" divide-y divide-gray-400">
                     {% for hospital in hospitals %}
                     <tr>
-                        <td class="px-6 py-4 whitespace-nowrap font-bold">{{ forloop.counter }}</td>
+                        <td class="px-8 py-4 whitespace-nowrap font-bold">{{ forloop.counter }}</td>
                         <td class="px-4 py-4 whitespace-nowrap">{{ hospital.name }}</td>
                         <td class="px-4 py-4 whitespace-nowrap">{{ hospital.amount }}</td>
                         <td class="px-4 py-4 whitespace-nowrap">

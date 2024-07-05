@@ -5,6 +5,7 @@ from django.views import View
 from django.http import HttpResponse
 from django.utils import timezone
 from django.contrib import messages
+import json
 from datetime import timedelta
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import Q
@@ -52,29 +53,83 @@ def dashboard(request):
         else:
             hospitals = Hospital.objects.filter(is_blocked=False).order_by('id')
 
+    # expired_hospitals_messages = []       
+
 
     for hospital in hospitals:
        
         if hospital.renewal_date:
             hospital.is_renewed = hospital.renewal_date >= datetime.now().date()
         else:
-            hospital.is_renewed = False    
+            hospital.is_renewed = False  
+        # if not hospital.is_renewed:
+        #     # hospital_name = hospital.name.replace("'", "\\'")
+        #     expired_hospitals_messages.append(f" '{hospital.name}' has expired.")
+
+    # expired_hospitals_messages_json = json.dumps(expired_hospitals_messages) 
+    # expired_hospitals_messages_json = json.dumps(expired_hospitals_messages)
+       
+      
     if request.method == 'POST':
         form = HospitalForm(request.POST, request.FILES)
         if form.is_valid():
             print("form is valid")
             form.save()
-            return redirect('dashboard')
+            return JsonResponse({'success': True})
+        # return redirect('dashboard')
         else:
             print("form is not valid")
             print(form.errors)
         
-            return render(request, 'index.html', {'hospitals': hospitals, 'form': form})
+            return JsonResponse({'success': False, 'errors': form.errors})
     else:
      
         form = HospitalForm()
 
-    return render(request, 'index.html', {'hospitals': hospitals, 'form': form ,'query':query})
+    return render(request, 'index.html', {'hospitals': hospitals, 'form': form ,'query':query })
+
+# def updated_hospitals(request):
+#     hospitals = Hospital.objects.all()  # Query your database for all hospitals
+    
+#     # Prepare data to be returned as JSON
+#     hospital_data = []
+#     for hospital in hospitals:
+#         hospital_info = {
+#             'name': hospital.name,
+#             'amount': hospital.amount,
+#             'registration_date': hospital.registration_date.strftime('%Y-%m-%d') if hospital.registration_date else None,
+#             'renewal_date': hospital.renewal_date.strftime('%Y-%m-%d') if hospital.renewal_date else None,
+#             'is_renew': hospital.is_renew,
+          
+#         }
+#         hospital_data.append(hospital_info)
+    
+#     # Return JSON response
+#     return JsonResponse({'hospitals': hospital_data})
+
+
+@login_required(login_url='login')
+def noti_modal(request):
+    hospitals = Hospital.objects.all()  # Replace with your actual query
+    current_date = timezone.now().date()
+    expired_hospitals_messages = []
+
+    for hospital in hospitals:
+        previously_renewed = hospital.is_renewed
+        hospital.is_renewed = hospital.renewal_date >= current_date
+
+        # Check if hospital has just expired
+        if previously_renewed and not hospital.is_renewed:
+            hospital_name = hospital.name.replace("'", "\\'")
+            expired_hospitals_messages.append(f"'{hospital_name}' has expired.")
+            messages.error(request, f"'{hospital_name}' has expired.")
+
+    # Save hospital status
+    for hospital in hospitals:
+        hospital.save()
+
+    # Render your template
+    return render(request, 'dashboard.html', context={'expired_hospitals_messages': expired_hospitals_messages})
 
 
 # Edit hospitals
@@ -199,19 +254,20 @@ def expired(request):
     expired_hospitals = Hospital.objects.filter(renewal_date__lte=current_date)
     # if expired_hospitals.exists():
     #     expired_hospital_names = ', '.join(hospital.name for hospital in expired_hospitals)
-    #     notification_message = f"{expired_hospital_names} expired."
+    #     notification_message = f"{ expired_hospital_names} expired."
 
-        # Add message for notification modal
-        # messages.success(request, notification_message)
+    #     # Add message for notification modal
+    #     messages.success(request, notification_message)
     if query:
         
         expired_hospitals = expired_hospitals.filter(name__icontains=query)
    
-    return render(request, 'expired.html', {'hospitals': expired_hospitals ,'query':query })
+    return render(request, 'expired.html', {'hospitals': expired_hospitals ,'query':query})
 
 
 
 # renew 
+@login_required(login_url='login')
 def renew_hospital(request, pk):
     hospital = Hospital.objects.get(pk=pk)
     if request.method == 'POST':
@@ -220,7 +276,7 @@ def renew_hospital(request, pk):
             hospital.renewal_date = new_renewal_date
             hospital.is_renewal_date_explicitly_set = True
             hospital.save()
-            messages.success(request, f'Renewed successfully.  New renewal date: {new_renewal_date.strftime("%d/%m/%Y")}')
+            messages.success(request, f' Renewed successfully.  New renewal date: {new_renewal_date.strftime("%d/%m/%Y")}')
             return JsonResponse({
                 'success': True,
                 'message': 'Renewal successful',
@@ -239,7 +295,7 @@ def renew_hospital(request, pk):
 
 
 
-
+@login_required(login_url='login')
 def payments(request):
     hospitals = Hospital.objects.filter(subscript='Permanent')
     query = request.GET.get('query')

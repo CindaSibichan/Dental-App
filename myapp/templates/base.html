@@ -32,7 +32,7 @@
 
                    
           <!-- Notification modal -->
-          <!-- <div id="noti_modal" class="fixed inset-0 flex justify-center items-center z-50 bg-gray-900 bg-opacity-50 hidden">
+          <div id="noti_modal" class="fixed inset-0 flex justify-center items-center z-50 bg-gray-900 bg-opacity-50 hidden">
             <div class="bg-white rounded shadow-xl  p-8 w-[80vw]  h-[36vh] lg:w-[45vw] lg:h-[40vh]">
                 <div class="flex justify-end">
                    <button id="closeBtn" class="focus:outline-none">
@@ -47,6 +47,7 @@
                                <div class="h-[1px] p-0 w-full bg-gray-300"></div>
                                <div class="w-full flex  pb-6">
                                 <h1 id="notificationMessage"></h1>
+                               
                        </div>
                       <div class="h-[1px] p-0 w-full bg-gray-300"></div>
                        
@@ -54,7 +55,7 @@
                         <button type="button" id="buttonClose" class="items-center justify-center  bg-gray-400 px-6 py-1 text-white rounded ">Close</button>
                       </div> 
                 </div>
-            </div> -->
+            </div>
 
  <!-- main buttons -->
 
@@ -83,7 +84,7 @@
   </div>
    
 
-  <!-- Edit Modal -->
+<!-- Edit Modal -->
 <div id="edit-modal" class="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-50 z-50  hidden">
   <div class="bg-white p-6 rounded-lg shadow-lg w-[80vw] lg:w-[40vw] z-50 lg:h-auto ">
       <h2 class="text-xl font-semibold mb-4">Edit Hospital</h2>
@@ -128,74 +129,6 @@
 </div>
 
 
-    <!-- Register modal -->
-
-  
-   
-    <div id="modal" class="fixed inset-0 flex justify-center items-center z-50 bg-gray-900 bg-opacity-50 hidden">
-      <div class="bg-white rounded shadow-xl  p-6 w-[80vw] h-auto lg:w-[40vw]  lg:h-auto">
-          <div class="flex justify-end">
-             <button id="closeModalBtn" class="focus:outline-none">
-               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700 hover:text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                         </svg>
-                             </button>
-                         </div>
-
-                         <div class="w-full flex  pb-6">
-                              <h1 class="text-2xl">Register New Hospital</h1>
-                 </div>
-                <div class="h-[1px] p-0 w-full bg-gray-300"></div>
-                <form  id="hospitalmodal" class="text-black h-full w-full  sm:w-[35vw] flex flex-col  items-center py-5 gap-8" action=""   method="POST" enctype="multipart/form-data">
-                 {% csrf_token %}
-                 
-                       
-                            
-                     <div class="child1 flex flex-col w-full justify-center items-start gap-1 ">
-                         <div class="flex flex-col w-3/4">
-                             <label class=" font-medium text-left">Hospital Name</label>
-                          {{ form.name }}
-                         </div>
-                         <div class="flex flex-col w-3/4">
-                             <label  class=" font-medium text-left">Phone Number</label>
-                          {{ form.phone }}
-                             
-                         </div> 
-                         <div class="flex flex-col w-3/4">
-                             <label  class=" text-left font-medium">Email</label> 
-                             {{ form.email }}
-                         </div>
-                         <div class="flex flex-col w-3/4">
-                             <label  class=" text-left font-medium">Subscription Type</label>
-                           {{ form.subscript }}
-                         </div>
-                     
-                
-                    
-                         <div class="flex flex-col  w-3/4 hidden " id="days">
-                             <label  class=" text-left font-medium ">Number of Days</label>
-                             {{ form.no_of_days }}
-                         </div>
-                         <div class="flex flex-col w-3/4 hidden" id="amount">
-                             <label  class="text-left font-medium ">Amount </label>
-                             {{ form.amount }}
-                              
-                         </div>
-                         <div class="flex flex-col w-3/4 hidden" id="register_date">
-                             <label  class="text-left font-medium ">Registration Date</label>
-                            {{ form.registration_date }}
-                              
-                         </div>
-                        
-                     </div>
-                 
-                 <div class="w-full flex justify-start gap-4">
-                     <button type="button" id="buttonReset" class="bg-gray-500 px-6 py-2 text-white rounded ">Reset</button>
-                     <button type="submit" id="buttonSave" class="bg-blue-500 px-6 py-2 text-white rounded">Submit</button>
-                 </div>  
-             </form> 
-             </div>
-         </div>
          <!-- Confirmation ResetModal -->
 <!-- <div id="confirmationModal" class="fixed inset-0 flex items-center justify-center hidden" >
     <div class="bg-white p-5 rounded-lg shadow-lg w-full max-w-md">
@@ -216,6 +149,8 @@
               <button id="closeSuccessModalBtn" class="bg-blue-500 px-6 py-2 text-white rounded mt-4">Close</button>
           </div>
     </div> -->
+
+
     <!-- confirm block modal -->
     <div id="confirmationModal" class="fixed inset-0 flex items-center z-50 justify-center bg-gray-900 bg-opacity-50 hidden">
         <div class="bg-white p-6 rounded shadow-md">
@@ -226,6 +161,8 @@
             </div>
         </div>
     </div>
+
+
 
         <!-- confirm unblock modal -->
         <div id="confirmationUnblockModal" class="fixed inset-0 flex items-center z-50 justify-center bg-gray-900 bg-opacity-50 hidden">
@@ -252,8 +189,38 @@
                </div>
 
     </div>
-   
-    <script src="{% static 'js/noti_modal.js' %}"></script>  
+    {% if expired_hospitals_messages %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Check if the modal has already been shown today
+            if (!localStorage.getItem('modalShown')) {
+                var expiredMessages = '{{ expired_hospitals_messages|join:"\\n" }}';
+                if (expiredMessages.trim() !== "") {
+                    var messagesList = expiredMessages.split('\n');
+                    if (messagesList.length > 0) {
+                        // Display the modal
+                        document.getElementById("noti_modal").classList.remove("hidden");
+                        document.getElementById("notificationMessage").innerText = messagesList.join('\n');
+                    }
+                }
+    
+                // Mark the modal as shown
+                localStorage.setItem('modalShown', 'true');
+            }
+        });
+    
+        // Close modal functionality
+        document.getElementById("closeBtn").addEventListener("click", function() {
+            document.getElementById("noti_modal").classList.add("hidden");
+        });
+    
+        document.getElementById("buttonClose").addEventListener("click", function() {
+            document.getElementById("noti_modal").classList.add("hidden");
+        });
+    </script>
+    {% endif %}
+    
+    <!-- <script src="{% static 'js/noti_modal.js' %}"></script>   -->
     <script src="{% static 'js/delete_modal.js' %}"></script>
     <script src="{% static 'js/block_modal.js' %}"></script>
     <!-- <script src="{% static 'js/register_modal.js' %}"></script> -->

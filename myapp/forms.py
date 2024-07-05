@@ -51,13 +51,13 @@ class HospitalForm(forms.ModelForm):
     #         'class': 'form-control block w-[60vw] sm:w-[35vw] h-[6vh] py-1 lg:py-1 pl-4 placeholder-gray-500 border border-gray-300 rounded text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs lg:text-sm'
     #     })
     # )
-    registration_date = forms.DateField(
-        widget=forms.DateInput(format='%d/%m/%Y',
-        attrs={ 'class':'form-control block w-[60vw] sm:w-[35vw] h-[6vh] py-1 lg:py-1 pl-4 pr-4 placeholder-gray-500 border border-gray-300 rounded text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs lg:text-sm ','type':'date'}),
-        input_formats=['%d/%m/%Y', '%Y-%m-%d'],
-        required=False
+    # registration_date = forms.DateField(
+    #     widget=forms.DateInput(format='%d/%m/%Y',
+    #     attrs={ 'class':'form-control block w-[60vw] sm:w-[35vw] h-[6vh] py-1 lg:py-1 pl-4 pr-4 placeholder-gray-500 border border-gray-300 rounded text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs lg:text-sm ','type':'date'}),
+    #     input_formats=['%d/%m/%Y', '%Y-%m-%d'],
+    #     required=False
         
-    )
+    # )
 
     class Meta:
         model = Hospital

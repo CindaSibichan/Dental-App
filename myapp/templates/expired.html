@@ -12,7 +12,7 @@
 <form action="{% url 'expired' %}" method="get" id="search-form">
     <div class="flex items-center justify-between  p-4">
         <div class="flex items-center space-x-4">
-            <button class="text-gray-600 hover:text-gray-900 focus:outline-none">
+            <button class="text-gray-600 bg-gray-300 rounded hover:text-gray-900 focus:outline-none">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                 </svg>
@@ -54,7 +54,7 @@
         <tbody class=" divide-y divide-gray-400">
             {% for hospital in   hospitals %}
             <tr>
-                <td class="px-6 py-4 whitespace-nowrap font-bold">{{ forloop.counter }}</td>
+                <td class="px-8 py-4 whitespace-nowrap font-bold">{{ forloop.counter }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">{{ hospital.name }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">{{ hospital.amount }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">
@@ -134,6 +134,7 @@
             success: function (data) {
                 if (data.success) {
                     // Show the success modal
+
                     $('#renewModalMessage').text('Renewed Successfully');
                     $('#newRenewalDate').text(data.new_renewal_date);
                     $('#renewModal').removeClass('hidden');
